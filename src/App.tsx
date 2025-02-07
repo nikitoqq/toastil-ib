@@ -6,26 +6,35 @@ import { themeStyle } from "./theme";
 
 import { GlobalStyle } from "./globalStyle";
 
-export const App = ({setToast}: any) => {
-  const [notification, setNotification] = useState([
-    {
-      position: "bottom-right",
-      title: "Wow toast",
-      text: "Wow it`s easy!",
-      type: "info",
-      theme: "colored",
-      transition: "flip",
-      autoClose: "1000",
-      key: 2,
-    },
-  ] as const);
+export const App = () => {
+  const [toast, setToast] = useState<object[]>([]);
 
+  const deleteToast = (e: any) =>
+    setToast((prev: any) => prev.filter((el: any) => el.key !== e.target.id));
+
+  const add = (biba: any) => {
+    if (toast.length === 0) {
+      biba.item = 0;
+      return setToast((prev: any) => [...prev, biba]);
+    }
+
+    const itemPos = toast.reduce((acc: any, cur: any) => {
+      if (cur.position === biba.position) {
+        acc += 1;
+      }
+      return acc;
+    }, 0);
+    biba.item = itemPos;
+
+    setToast((prev: any) => [...prev, biba]);
+  };
 
   return (
     <ThemeProvider theme={themeStyle}>
       <GlobalStyle />
-      {notification.map((el, index) => (
+      {toast.map((el: any, index: any) => (
         <Toastify
+          deleteToast={deleteToast}
           position={el.position}
           title={el.title}
           text={el.text}
@@ -33,9 +42,26 @@ export const App = ({setToast}: any) => {
           theme={el.theme}
           transition={el.transition}
           autoClose={el.autoClose}
+          id={el.key}
+          item={el.item}
           key={index}
         />
       ))}
+      <button
+        onClick={() =>
+          add({
+            position: "top-center",
+            title: "Wow toast",
+            text: "Wow it`s easy!",
+            type: "warning",
+            theme: "dark",
+            transition: "slide",
+            autoClose: "1000",
+            key: "1",
+          })
+        }
+        style={{ width: "200px", height: "100px" }}
+      ></button>
     </ThemeProvider>
   );
 };

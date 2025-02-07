@@ -30,26 +30,30 @@ export const themeStyle = {
   dark: {
     h1: "rgb(255, 255, 255)",
     h2: "rgb(241, 241, 241)",
-    backgroundColor: "#000",
     info: {
       barColor: "#64b0e3",
       iconColor: "#fff",
+      backgroundColor: "#000",
     },
     success: {
       barColor: "#42cc45",
       iconColor: "#fff",
+      backgroundColor: "#000",
     },
     warning: {
       barColor: "#f4d149",
       iconColor: "#fff",
+      backgroundColor: "#000",
     },
     error: {
       barColor: "#ea776a",
       iconColor: "#fff",
+      backgroundColor: "#000",
     },
     default: {
       barColor: "#64b0e3",
       iconColor: "#fff",
+      backgroundColor: "#000",
     },
   },
   colored: {

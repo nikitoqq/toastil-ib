@@ -24,7 +24,6 @@ const root = ReactDOM.createRoot(
 
 root.render(
   <>
-    <App setToast={setToast} />
-    <button style={{ top: "0px", width: "200px", height: "200px" }}></button>
+    <App />
   </>
 );

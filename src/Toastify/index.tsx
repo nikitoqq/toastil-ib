@@ -21,8 +21,9 @@ import {
 } from "./styled";
 
 interface ToastProps {
-  title?: string;
-  text?: string;
+  item: number;
+  title: string;
+  text: string;
   position:
     | "top-right"
     | "top-left"
@@ -33,7 +34,9 @@ interface ToastProps {
   type: "info" | "success" | "warning" | "error" | "default";
   theme: "light" | "dark" | "colored";
   transition: "bounce" | "slide" | "zoom" | "flip";
-  autoClose: string;
+  autoClose: number;
+  id: string;
+  deleteToast: any;
 }
 
 interface ToastStyle {
@@ -52,9 +55,11 @@ interface ToastStyle {
   src: string;
   text?: string;
   title?: string;
+  margin?: string;
 }
 
 export const Toastify = ({
+  deleteToast,
   title,
   text,
   position,
@@ -62,13 +67,15 @@ export const Toastify = ({
   theme,
   transition,
   autoClose,
+  id,
+  item,
 }: ToastProps) => {
   const toastStyle: ToastStyle = {
     text: text,
     title: title,
     src: setStateTypes(type),
     ...setStateTheme(theme, type),
-    ...setStateStyle(position),
+    ...setStateStyle(position, item),
     autoClose: autoClose,
     animation: setStateTransition(transition, position),
   };
@@ -81,7 +88,12 @@ export const Toastify = ({
         </Column>
         <CancelColumn>
           <Cancel style={{ backgroundColor: toastStyle.backgroundColor }}>
-            <Image src="./assets/cancel.png" alt="cancel" />
+            <Image
+              id={id}
+              onClick={deleteToast}
+              src="./assets/cancel.png"
+              alt="cancel"
+            />
           </Cancel>
         </CancelColumn>
       </Row>
@@ -91,7 +103,11 @@ export const Toastify = ({
           <Message style={{ color: toastStyle.h2 }}>{text}</Message>
         </Column>
       </Row>
-      <Loader property={toastStyle.autoClose} />
+      <Loader
+        id={id}
+        onAnimationEnd={deleteToast}
+        property={toastStyle.autoClose}
+      />
       <HiddenLoader style={{ backgroundColor: toastStyle.barColor }} />
     </Toast>
   );
