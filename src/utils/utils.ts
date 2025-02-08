@@ -16,29 +16,29 @@ const toastIconLink = {
 
 const toastStyleData = {
   topRight: {
-    top: "2vw",
+    top: "20px",
     right: "2vw",
   },
   topLeft: {
-    top: "2vw",
+    top: "20px",
     left: "2vw",
   },
   topCenter: {
-    top: "2vw",
-    transform: "translateX(-50%)",
     left: "50%",
+    transform: "translate(-50%)",
+    top: "20px",
   },
   bottomRight: {
-    bottom: "2vw",
+    bottom: "20px",
     right: "2vw",
   },
   bottomLeft: {
-    bottom: "2vw",
+    bottom: "20px",
     left: "2vw",
   },
   bottomCenter: {
-    bottom: "2vw",
-    transform: "translateX(-50%)",
+    bottom: "20px",
+    transform: "translate(-50%)",
     left: "50%",
   },
 };
@@ -55,18 +55,22 @@ export const setStateTypes = (type: string): string => {
     : toastIconLink.default;
 };
 
-export const setStateStyle = (position: string) =>
-  position === "top-left"
-    ? toastStyleData.topLeft
-    : position === "top-center"
-    ? toastStyleData.topCenter
-    : position === "bottom-left"
-    ? toastStyleData.bottomLeft
-    : position === "bottom-center"
-    ? toastStyleData.bottomCenter
-    : position === "bottom-right"
-    ? toastStyleData.bottomRight
-    : toastStyleData.topRight;
+export const setStateStyle = (position: string, item: number) => {
+  const pos =
+    position === "top-left"
+      ? toastStyleData.topLeft
+      : position === "top-center"
+      ? toastStyleData.topCenter
+      : position === "bottom-left"
+      ? toastStyleData.bottomLeft
+      : position === "bottom-center"
+      ? toastStyleData.bottomCenter
+      : position === "bottom-right"
+      ? toastStyleData.bottomRight
+      : toastStyleData.topRight;
+
+  return setSpace(position, item, pos);
+};
 
 export const setStateTheme = (theme: string, type: string) => {
   const themes =
@@ -91,38 +95,62 @@ export const setStateTheme = (theme: string, type: string) => {
   };
 };
 
-export const setStateTransition = (transition: string, position: string) => {
+export const setStateTransition = (
+  transition: string,
+  position: string,
+  revers?: string
+) => {
   if (transition === "slide") {
     return `0.5s linear 0s alternate ${
       position === "bottom-right"
-        ? "slideBottom-right"
+        ? "slide-bottom-right"
         : position === "bottom-center"
-        ? "slideBottom-center"
+        ? "slide-bottom-center"
         : position === "bottom-left"
-        ? "slideBottom-left"
+        ? "slide-bottom-left"
         : position === "top-left"
-        ? "slideTop-left"
+        ? "slide-top-left"
         : position === "top-center"
-        ? "slideTop-center"
-        : "slideTop-right"
+        ? "slide-top-center"
+        : "slide-top-right"
     }`;
   } else if (transition === "bounce") {
     return `0.5s linear 0s alternate ${
       position === "bottom-right"
-        ? "bounceBottom-right"
+        ? "bounce-bottom-right"
         : position === "bottom-center"
-        ? "bounceBottom-center"
+        ? "bounce-bottom-center"
         : position === "bottom-left"
-        ? "bounceBottom-left"
+        ? "bounce-bottom-left"
         : position === "top-left"
-        ? "bounceTop-left"
+        ? "bounce-top-left"
         : position === "top-center"
-        ? "bounceTop-center"
-        : "bounceTop-right"
-    }`;
+        ? "bounce-top-center"
+        : "bounce-top-right"
+    }${revers}`;
   } else if (transition === "zoom") {
-    return "0.5s ease alternate zoom";
+    return `0.5s ease alternate zoom${revers}`;
   } else if (transition === "flip") {
-    return "0.5s ease alternate flip";
+    return `0.5s ease alternate flip${revers}`;
+  }
+};
+
+const setSpace = (position: string, item: number, pos: any) => {
+  if (item === 0 && position.includes("top")) {
+    pos.top = "20px";
+    return pos;
+  }
+  if (item === 0 && position.includes("bottom")) {
+    pos.top = "2px";
+    return pos;
+  }
+  if (position.includes("top")) {
+    pos.top = `${100 * item + 20}px`;
+    return pos;
+  }
+
+  if (position.includes("bottom")) {
+    pos.bottom = `${100 * item + 20}px`;
+    return pos;
   }
 };

@@ -1,9 +1,10 @@
+import React from "react";
 import {
   setStateTypes,
   setStateStyle,
   setStateTheme,
   setStateTransition,
-} from "../utils/utils";
+} from "../../utils/utils";
 
 import { SvgIcon } from "../SvgIcon";
 
@@ -19,40 +20,7 @@ import {
   Tittle,
   HiddenLoader,
 } from "./styled";
-
-interface ToastProps {
-  title?: string;
-  text?: string;
-  position:
-    | "top-right"
-    | "top-left"
-    | "top-center"
-    | "bottom-right"
-    | "bottom-left"
-    | "bottom-center";
-  type: "info" | "success" | "warning" | "error" | "default";
-  theme: "light" | "dark" | "colored";
-  transition: "bounce" | "slide" | "zoom" | "flip";
-  autoClose: string;
-}
-
-interface ToastStyle {
-  animation?: string;
-  autoClose?: string;
-  bottom?: string;
-  top?: string;
-  left?: string;
-  right?: string;
-  transform?: string;
-  barColor?: string;
-  backgroundColor?: string;
-  h1?: string;
-  h2?: string;
-  iconColor?: string;
-  src: string;
-  text?: string;
-  title?: string;
-}
+import { ToastProps, ToastStyle } from "../../types";
 
 export const Toastify = ({
   title,
@@ -62,13 +30,16 @@ export const Toastify = ({
   theme,
   transition,
   autoClose,
+  deleteToast,
+  id,
+  item,
 }: ToastProps) => {
   const toastStyle: ToastStyle = {
     text: text,
     title: title,
     src: setStateTypes(type),
     ...setStateTheme(theme, type),
-    ...setStateStyle(position),
+    ...setStateStyle(position, item),
     autoClose: autoClose,
     animation: setStateTransition(transition, position),
   };
@@ -80,8 +51,12 @@ export const Toastify = ({
           <Tittle style={{ color: toastStyle.h1 }}>{title}</Tittle>
         </Column>
         <CancelColumn>
-          <Cancel style={{ backgroundColor: toastStyle.backgroundColor }}>
-            <Image src="./assets/cancel.png" alt="cancel" />
+          <Cancel
+            id={id}
+            onClick={deleteToast}
+            style={{ backgroundColor: toastStyle.backgroundColor }}
+          >
+            <Image src="./f" alt="cancel" />
           </Cancel>
         </CancelColumn>
       </Row>
@@ -91,7 +66,11 @@ export const Toastify = ({
           <Message style={{ color: toastStyle.h2 }}>{text}</Message>
         </Column>
       </Row>
-      <Loader property={toastStyle.autoClose} />
+      <Loader
+        id={id}
+        onAnimationEnd={deleteToast}
+        property={toastStyle.autoClose}
+      />
       <HiddenLoader style={{ backgroundColor: toastStyle.barColor }} />
     </Toast>
   );

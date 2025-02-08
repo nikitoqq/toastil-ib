@@ -1,31 +1,20 @@
-import { useState } from "react";
+import React from "react";
 import { ThemeProvider } from "styled-components";
 
-import { Toastify } from "./Toastify";
+import { Toastify } from "./components/Toastify";
 import { themeStyle } from "./theme";
 
 import { GlobalStyle } from "./globalStyle";
+import { UseNotification } from "./hooks/UseNotification";
 
-export const App = ({setToast}: any) => {
-  const [notification, setNotification] = useState([
-    {
-      position: "bottom-right",
-      title: "Wow toast",
-      text: "Wow it`s easy!",
-      type: "info",
-      theme: "colored",
-      transition: "flip",
-      autoClose: "1000",
-      key: 2,
-    },
-  ] as const);
-
-
+export const App = () => {
+  const { addToast, deleteToast, toast } = UseNotification();
   return (
     <ThemeProvider theme={themeStyle}>
       <GlobalStyle />
-      {notification.map((el, index) => (
+      {toast.map((el: any, index: any) => (
         <Toastify
+          deleteToast={deleteToast}
           position={el.position}
           title={el.title}
           text={el.text}
@@ -33,7 +22,8 @@ export const App = ({setToast}: any) => {
           theme={el.theme}
           transition={el.transition}
           autoClose={el.autoClose}
-          key={index}
+          id={el.key}
+          item={el.item}
         />
       ))}
     </ThemeProvider>
