@@ -55,7 +55,7 @@ export const setStateTypes = (type: string): string => {
     : toastIconLink.default;
 };
 
-export const setStateStyle = (position: string, item: number) => {
+export const setStateStyle = (position: string, item?: number) => {
   const pos =
     position === "top-left"
       ? toastStyleData.topLeft
@@ -69,7 +69,7 @@ export const setStateStyle = (position: string, item: number) => {
       ? toastStyleData.bottomRight
       : toastStyleData.topRight;
 
-  return setSpace(position, item, pos);
+  return setSpace(position, pos, item);
 };
 
 export const setStateTheme = (theme: string, type: string) => {
@@ -135,22 +135,26 @@ export const setStateTransition = (
   }
 };
 
-const setSpace = (position: string, item: number, pos: any) => {
+const setSpace = (position: string, pos: any, item?: number) => {
   if (item === 0 && position.includes("top")) {
     pos.top = "20px";
     return pos;
   }
   if (item === 0 && position.includes("bottom")) {
-    pos.top = "2px";
+    pos.bottom = "20px";
     return pos;
   }
   if (position.includes("top")) {
-    pos.top = `${100 * item + 20}px`;
+    if (item) {
+      pos.top = `${100 * item + 20}px`;
+    }
     return pos;
   }
 
   if (position.includes("bottom")) {
-    pos.bottom = `${100 * item + 20}px`;
+    if (item) {
+      pos.bottom = `${100 * item + 20}px`;
+    }
     return pos;
   }
 };

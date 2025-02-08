@@ -1,6 +1,6 @@
 {
   "name": "toast-lib-nikitoqq",
-  "version": "0.0.1",
+  "version": "0.0.18",
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
   "types": "./dist/index.d.ts",
@@ -20,6 +20,7 @@
     "@types/react": "^19.0.8",
     "@types/react-dom": "^19.0.3",
     "react": "^19.0.0",
+    "styled-components": "^6.1.15",
     "tslib": "^2.8.1",
     "tsup": "^8.3.6",
     "typescript": "^5.7.3"

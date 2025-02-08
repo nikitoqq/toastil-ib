@@ -4,8 +4,8 @@ export interface SvgType {
 }
 
 export interface ToastProps {
-  title?: string;
-  text?: string;
+  title: string;
+  text: string;
   position:
     | "top-right"
     | "top-left"
@@ -17,9 +17,9 @@ export interface ToastProps {
   theme: "light" | "dark" | "colored";
   transition: "bounce" | "slide" | "zoom" | "flip";
   autoClose: string;
-  deleteToast: any;
-  id: string;
-  item: number;
+  deleteToast?: any;
+  id?: string;
+  item?: number;
 }
 
 export interface ToastStyle {
