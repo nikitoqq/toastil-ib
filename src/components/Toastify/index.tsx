@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import {
   setStateTypes,
   setStateStyle,
@@ -21,6 +21,7 @@ import {
   HiddenLoader,
 } from "./styled";
 import { ToastProps, ToastStyle } from "../../types";
+import { notifyContext } from "../../context";
 
 export const Toastify = ({
   title,

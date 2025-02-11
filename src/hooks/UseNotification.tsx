@@ -1,10 +1,10 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { notifyContext } from "../context";
 import { ToastProps } from "../types";
 
 export const useNotification = () => {
   const [id, setId] = useState<string>("0");
-  const [toast, setToast] = useState<any>(notifyContext);
+  const [toast, setToast] = useState<any>([]);
 
   const deleteToast = (e: any) => {
     setToast((prev: object[]) =>
