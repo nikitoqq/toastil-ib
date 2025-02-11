@@ -1,19 +1,26 @@
 // src/hooks/UseNotification.tsx
 import { useState } from "react";
+
+// src/components/Context/index.tsx
+import React from "react";
+import { createContext } from "react";
+var notifyContext = createContext({});
+var NotifyContextProvider = ({
+  children
+}) => {
+  const { toast, addToast, deleteToast } = useNotification();
+  const value = {
+    toast,
+    addToast,
+    deleteToast
+  };
+  return /* @__PURE__ */ React.createElement(notifyContext.Provider, { value }, children);
+};
+
+// src/hooks/UseNotification.tsx
 var useNotification = () => {
   const [id, setId] = useState("0");
-  const [toast, setToast] = useState([
-    {
-      position: "bottom-right",
-      title: "Wow toast",
-      text: "Wow it`s easy!",
-      type: "info",
-      theme: "colored",
-      transition: "flip",
-      autoClose: "1000",
-      id
-    }
-  ]);
+  const [toast, setToast] = useState(notifyContext);
   const deleteToast = (e) => {
     setToast(
       (prev) => prev.filter((el) => el.id !== e.target.id)
@@ -38,11 +45,11 @@ var useNotification = () => {
 };
 
 // src/Toast.tsx
-import React3 from "react";
+import React4, { useContext } from "react";
 import { ThemeProvider } from "styled-components";
 
 // src/components/Toastify/index.tsx
-import React2 from "react";
+import React3 from "react";
 
 // src/theme.ts
 var themeStyle = {
@@ -174,7 +181,7 @@ var setStateTypes = (type) => {
 };
 var setStateStyle = (position, item) => {
   const pos = position === "top-left" ? toastStyleData.topLeft : position === "top-center" ? toastStyleData.topCenter : position === "bottom-left" ? toastStyleData.bottomLeft : position === "bottom-center" ? toastStyleData.bottomCenter : position === "bottom-right" ? toastStyleData.bottomRight : toastStyleData.topRight;
-  return setSpace(position, item, pos);
+  return setSpace(position, pos, item);
 };
 var setStateTheme = (theme, type) => {
   const themes = theme === "dark" ? themeStyle.dark : theme === "colored" ? themeStyle.colored : themeStyle.light;
@@ -195,7 +202,7 @@ var setStateTransition = (transition, position, revers) => {
     return `0.5s ease alternate flip${revers}`;
   }
 };
-var setSpace = (position, item, pos) => {
+var setSpace = (position, pos, item) => {
   if (item === 0 && position.includes("top")) {
     pos.top = "20px";
     return pos;
@@ -205,17 +212,21 @@ var setSpace = (position, item, pos) => {
     return pos;
   }
   if (position.includes("top")) {
-    pos.top = `${100 * item + 20}px`;
+    if (item) {
+      pos.top = `${100 * item + 20}px`;
+    }
     return pos;
   }
   if (position.includes("bottom")) {
-    pos.bottom = `${100 * item + 20}px`;
+    if (item) {
+      pos.bottom = `${100 * item + 20}px`;
+    }
     return pos;
   }
 };
 
 // src/components/SvgIcon/index.tsx
-import React from "react";
+import React2 from "react";
 
 // src/components/SvgIcon/styled.ts
 import styled from "styled-components";
@@ -227,7 +238,7 @@ var ImageType = styled("svg")`
 
 // src/components/SvgIcon/index.tsx
 var SvgIcon = ({ path, color }) => {
-  return /* @__PURE__ */ React.createElement(ImageType, { viewBox: "0 0 25 25", color, width: "25px", height: "25px", fill: "currentColor" }, /* @__PURE__ */ React.createElement("path", { d: path }));
+  return /* @__PURE__ */ React2.createElement(ImageType, { viewBox: "0 0 25 25", color, width: "25px", height: "25px", fill: "currentColor" }, /* @__PURE__ */ React2.createElement("path", { d: path }));
 };
 
 // src/components/Toastify/styled.ts
@@ -709,22 +720,22 @@ var Toastify = ({
     autoClose,
     animation: setStateTransition(transition, position)
   };
-  return /* @__PURE__ */ React2.createElement(Toast, { style: toastStyle }, /* @__PURE__ */ React2.createElement(Row, null, /* @__PURE__ */ React2.createElement(Column, null, /* @__PURE__ */ React2.createElement(Tittle, { style: { color: toastStyle.h1 } }, title)), /* @__PURE__ */ React2.createElement(CancelColumn, null, /* @__PURE__ */ React2.createElement(
+  return /* @__PURE__ */ React3.createElement(Toast, { style: toastStyle }, /* @__PURE__ */ React3.createElement(Row, null, /* @__PURE__ */ React3.createElement(Column, null, /* @__PURE__ */ React3.createElement(Tittle, { style: { color: toastStyle.h1 } }, title)), /* @__PURE__ */ React3.createElement(CancelColumn, null, /* @__PURE__ */ React3.createElement(
     Cancel,
     {
       id,
       onClick: deleteToast,
       style: { backgroundColor: toastStyle.backgroundColor }
     },
-    /* @__PURE__ */ React2.createElement(Image, { src: "./f", alt: "cancel" })
-  ))), /* @__PURE__ */ React2.createElement(Row, null, /* @__PURE__ */ React2.createElement(Column, null, /* @__PURE__ */ React2.createElement(SvgIcon, { color: toastStyle.iconColor, path: toastStyle.src }), /* @__PURE__ */ React2.createElement(Message, { style: { color: toastStyle.h2 } }, text))), /* @__PURE__ */ React2.createElement(
+    /* @__PURE__ */ React3.createElement(Image, { src: "./f", alt: "cancel" })
+  ))), /* @__PURE__ */ React3.createElement(Row, null, /* @__PURE__ */ React3.createElement(Column, null, /* @__PURE__ */ React3.createElement(SvgIcon, { color: toastStyle.iconColor, path: toastStyle.src }), /* @__PURE__ */ React3.createElement(Message, { style: { color: toastStyle.h2 } }, text))), /* @__PURE__ */ React3.createElement(
     Loader,
     {
       id,
       onAnimationEnd: deleteToast,
       property: toastStyle.autoClose
     }
-  ), /* @__PURE__ */ React2.createElement(HiddenLoader, { style: { backgroundColor: toastStyle.barColor } }));
+  ), /* @__PURE__ */ React3.createElement(HiddenLoader, { style: { backgroundColor: toastStyle.barColor } }));
 };
 
 // src/globalStyle.ts
@@ -738,9 +749,10 @@ var GlobalStyle = createGlobalStyle`
 `;
 
 // src/Toast.tsx
-var App = () => {
-  const { toast, deleteToast } = useNotification();
-  return /* @__PURE__ */ React3.createElement(ThemeProvider, { theme: themeStyle }, /* @__PURE__ */ React3.createElement(GlobalStyle, null), toast.map((el, index) => /* @__PURE__ */ React3.createElement(
+var Toast2 = () => {
+  const toast = useContext(notifyContext);
+  const deleteToast = useContext(notifyContext);
+  return /* @__PURE__ */ React4.createElement(ThemeProvider, { theme: themeStyle }, /* @__PURE__ */ React4.createElement(GlobalStyle, null), toast.map((el, index) => /* @__PURE__ */ React4.createElement(
     Toastify,
     {
       deleteToast,
@@ -761,6 +773,8 @@ var App = () => {
 // src/index.tsx
 var index_default = useNotification;
 export {
-  App,
-  index_default as default
+  NotifyContextProvider,
+  Toast2 as Toast,
+  index_default as default,
+  notifyContext
 };

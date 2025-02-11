@@ -1,5 +1,5 @@
-import React from "react";
 import { useNotification } from "./hooks/UseNotification";
+export * from "./components/Context";
 export * from "./Toast";
 export * from "./types";
-export default useNotification 
+export default useNotification;

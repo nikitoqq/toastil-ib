@@ -30,27 +30,36 @@ var __toCommonJS = (mod) => __copyProps(__defProp({}, "__esModule", { value: tru
 // src/index.tsx
 var index_exports = {};
 __export(index_exports, {
-  App: () => App,
-  default: () => index_default
+  NotifyContextProvider: () => NotifyContextProvider,
+  Toast: () => Toast2,
+  default: () => index_default,
+  notifyContext: () => notifyContext
 });
 module.exports = __toCommonJS(index_exports);
 
 // src/hooks/UseNotification.tsx
-var import_react = require("react");
+var import_react3 = require("react");
+
+// src/components/Context/index.tsx
+var import_react = __toESM(require("react"));
+var import_react2 = require("react");
+var notifyContext = (0, import_react2.createContext)({});
+var NotifyContextProvider = ({
+  children
+}) => {
+  const { toast, addToast, deleteToast } = useNotification();
+  const value = {
+    toast,
+    addToast,
+    deleteToast
+  };
+  return /* @__PURE__ */ import_react.default.createElement(notifyContext.Provider, { value }, children);
+};
+
+// src/hooks/UseNotification.tsx
 var useNotification = () => {
-  const [id, setId] = (0, import_react.useState)("0");
-  const [toast, setToast] = (0, import_react.useState)([
-    {
-      position: "bottom-right",
-      title: "Wow toast",
-      text: "Wow it`s easy!",
-      type: "info",
-      theme: "colored",
-      transition: "flip",
-      autoClose: "1000",
-      id
-    }
-  ]);
+  const [id, setId] = (0, import_react3.useState)("0");
+  const [toast, setToast] = (0, import_react3.useState)(notifyContext);
   const deleteToast = (e) => {
     setToast(
       (prev) => prev.filter((el) => el.id !== e.target.id)
@@ -75,11 +84,11 @@ var useNotification = () => {
 };
 
 // src/Toast.tsx
-var import_react4 = __toESM(require("react"));
+var import_react6 = __toESM(require("react"));
 var import_styled_components5 = require("styled-components");
 
 // src/components/Toastify/index.tsx
-var import_react3 = __toESM(require("react"));
+var import_react5 = __toESM(require("react"));
 
 // src/theme.ts
 var themeStyle = {
@@ -211,7 +220,7 @@ var setStateTypes = (type) => {
 };
 var setStateStyle = (position, item) => {
   const pos = position === "top-left" ? toastStyleData.topLeft : position === "top-center" ? toastStyleData.topCenter : position === "bottom-left" ? toastStyleData.bottomLeft : position === "bottom-center" ? toastStyleData.bottomCenter : position === "bottom-right" ? toastStyleData.bottomRight : toastStyleData.topRight;
-  return setSpace(position, item, pos);
+  return setSpace(position, pos, item);
 };
 var setStateTheme = (theme, type) => {
   const themes = theme === "dark" ? themeStyle.dark : theme === "colored" ? themeStyle.colored : themeStyle.light;
@@ -232,7 +241,7 @@ var setStateTransition = (transition, position, revers) => {
     return `0.5s ease alternate flip${revers}`;
   }
 };
-var setSpace = (position, item, pos) => {
+var setSpace = (position, pos, item) => {
   if (item === 0 && position.includes("top")) {
     pos.top = "20px";
     return pos;
@@ -242,17 +251,21 @@ var setSpace = (position, item, pos) => {
     return pos;
   }
   if (position.includes("top")) {
-    pos.top = `${100 * item + 20}px`;
+    if (item) {
+      pos.top = `${100 * item + 20}px`;
+    }
     return pos;
   }
   if (position.includes("bottom")) {
-    pos.bottom = `${100 * item + 20}px`;
+    if (item) {
+      pos.bottom = `${100 * item + 20}px`;
+    }
     return pos;
   }
 };
 
 // src/components/SvgIcon/index.tsx
-var import_react2 = __toESM(require("react"));
+var import_react4 = __toESM(require("react"));
 
 // src/components/SvgIcon/styled.ts
 var import_styled_components = __toESM(require("styled-components"));
@@ -264,7 +277,7 @@ var ImageType = (0, import_styled_components.default)("svg")`
 
 // src/components/SvgIcon/index.tsx
 var SvgIcon = ({ path, color }) => {
-  return /* @__PURE__ */ import_react2.default.createElement(ImageType, { viewBox: "0 0 25 25", color, width: "25px", height: "25px", fill: "currentColor" }, /* @__PURE__ */ import_react2.default.createElement("path", { d: path }));
+  return /* @__PURE__ */ import_react4.default.createElement(ImageType, { viewBox: "0 0 25 25", color, width: "25px", height: "25px", fill: "currentColor" }, /* @__PURE__ */ import_react4.default.createElement("path", { d: path }));
 };
 
 // src/components/Toastify/styled.ts
@@ -746,22 +759,22 @@ var Toastify = ({
     autoClose,
     animation: setStateTransition(transition, position)
   };
-  return /* @__PURE__ */ import_react3.default.createElement(Toast, { style: toastStyle }, /* @__PURE__ */ import_react3.default.createElement(Row, null, /* @__PURE__ */ import_react3.default.createElement(Column, null, /* @__PURE__ */ import_react3.default.createElement(Tittle, { style: { color: toastStyle.h1 } }, title)), /* @__PURE__ */ import_react3.default.createElement(CancelColumn, null, /* @__PURE__ */ import_react3.default.createElement(
+  return /* @__PURE__ */ import_react5.default.createElement(Toast, { style: toastStyle }, /* @__PURE__ */ import_react5.default.createElement(Row, null, /* @__PURE__ */ import_react5.default.createElement(Column, null, /* @__PURE__ */ import_react5.default.createElement(Tittle, { style: { color: toastStyle.h1 } }, title)), /* @__PURE__ */ import_react5.default.createElement(CancelColumn, null, /* @__PURE__ */ import_react5.default.createElement(
     Cancel,
     {
       id,
       onClick: deleteToast,
       style: { backgroundColor: toastStyle.backgroundColor }
     },
-    /* @__PURE__ */ import_react3.default.createElement(Image, { src: "./f", alt: "cancel" })
-  ))), /* @__PURE__ */ import_react3.default.createElement(Row, null, /* @__PURE__ */ import_react3.default.createElement(Column, null, /* @__PURE__ */ import_react3.default.createElement(SvgIcon, { color: toastStyle.iconColor, path: toastStyle.src }), /* @__PURE__ */ import_react3.default.createElement(Message, { style: { color: toastStyle.h2 } }, text))), /* @__PURE__ */ import_react3.default.createElement(
+    /* @__PURE__ */ import_react5.default.createElement(Image, { src: "./f", alt: "cancel" })
+  ))), /* @__PURE__ */ import_react5.default.createElement(Row, null, /* @__PURE__ */ import_react5.default.createElement(Column, null, /* @__PURE__ */ import_react5.default.createElement(SvgIcon, { color: toastStyle.iconColor, path: toastStyle.src }), /* @__PURE__ */ import_react5.default.createElement(Message, { style: { color: toastStyle.h2 } }, text))), /* @__PURE__ */ import_react5.default.createElement(
     Loader,
     {
       id,
       onAnimationEnd: deleteToast,
       property: toastStyle.autoClose
     }
-  ), /* @__PURE__ */ import_react3.default.createElement(HiddenLoader, { style: { backgroundColor: toastStyle.barColor } }));
+  ), /* @__PURE__ */ import_react5.default.createElement(HiddenLoader, { style: { backgroundColor: toastStyle.barColor } }));
 };
 
 // src/globalStyle.ts
@@ -775,9 +788,10 @@ var GlobalStyle = import_styled_components4.createGlobalStyle`
 `;
 
 // src/Toast.tsx
-var App = () => {
-  const { toast, deleteToast } = useNotification();
-  return /* @__PURE__ */ import_react4.default.createElement(import_styled_components5.ThemeProvider, { theme: themeStyle }, /* @__PURE__ */ import_react4.default.createElement(GlobalStyle, null), toast.map((el, index) => /* @__PURE__ */ import_react4.default.createElement(
+var Toast2 = () => {
+  const toast = (0, import_react6.useContext)(notifyContext);
+  const deleteToast = (0, import_react6.useContext)(notifyContext);
+  return /* @__PURE__ */ import_react6.default.createElement(import_styled_components5.ThemeProvider, { theme: themeStyle }, /* @__PURE__ */ import_react6.default.createElement(GlobalStyle, null), toast.map((el, index) => /* @__PURE__ */ import_react6.default.createElement(
     Toastify,
     {
       deleteToast,
@@ -799,5 +813,7 @@ var App = () => {
 var index_default = useNotification;
 // Annotate the CommonJS export names for ESM import in node:
 0 && (module.exports = {
-  App
+  NotifyContextProvider,
+  Toast,
+  notifyContext
 });

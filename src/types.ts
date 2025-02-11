@@ -22,6 +22,12 @@ export interface ToastProps {
   item?: number;
 }
 
+export interface NotifyContextType {
+  toast?: object[],
+  addToast?: any,
+  deleteToast?: any
+}
+
 export interface ToastStyle {
   animation?: string;
   autoClose?: string;

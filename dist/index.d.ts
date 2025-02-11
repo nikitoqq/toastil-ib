@@ -16,6 +16,11 @@ interface ToastProps {
     id?: string;
     item?: number;
 }
+interface NotifyContextType {
+    toast?: object[];
+    addToast?: any;
+    deleteToast?: any;
+}
 interface ToastStyle {
     animation?: string;
     autoClose?: string;
@@ -35,11 +40,17 @@ interface ToastStyle {
 }
 
 declare const useNotification: () => {
-    toast: object[];
+    toast: any;
     addToast: (obj: ToastProps) => void;
     deleteToast: (e: any) => void;
 };
 
-declare const App: () => React.JSX.Element;
+declare const notifyContext: React.Context<NotifyContextType>;
+declare const NotifyContextProvider: ({ children, }: {
+    children: React.ReactNode;
+    value: any;
+}) => React.JSX.Element;
 
-export { App, type SvgType, type ToastProps, type ToastStyle, useNotification as default };
+declare const Toast: () => React.JSX.Element;
+
+export { NotifyContextProvider, type NotifyContextType, type SvgType, Toast, type ToastProps, type ToastStyle, useNotification as default, notifyContext };
