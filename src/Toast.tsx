@@ -6,10 +6,9 @@ import { Toastify } from "./components/Toastify";
 import { themeStyle } from "./theme";
 import { GlobalStyle } from "./globalStyle";
 import { useNotification } from "./hooks/UseNotification";
-import { ToastProps } from "./types";
 
-export const App = () => {
-  const { toast, deleteToast } = useNotification();
+export const Toast = () => {
+  const {toast, deleteToast} = useNotification()
 
   return (
     <ThemeProvider theme={themeStyle}>
@@ -25,7 +24,6 @@ export const App = () => {
           transition={el.transition}
           autoClose={el.autoClose}
           id={index}
-          key={index}
           item={el.item}
         />
       ))}

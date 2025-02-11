@@ -1,20 +1,10 @@
 import { useState } from "react";
+import { notifyContext } from "../context";
 import { ToastProps } from "../types";
 
 export const useNotification = () => {
   const [id, setId] = useState<string>("0");
-  const [toast, setToast] = useState<object[]>([
-    {
-      position: "bottom-right",
-      title: "Wow toast",
-      text: "Wow it`s easy!",
-      type: "info",
-      theme: "colored",
-      transition: "flip",
-      autoClose: "1000",
-      id: id,
-    },
-  ]);
+  const [toast, setToast] = useState<any>(notifyContext);
 
   const deleteToast = (e: any) => {
     setToast((prev: object[]) =>

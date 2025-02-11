@@ -1,5 +1,6 @@
 import React from "react";
-import { useNotification } from "./hooks/UseNotification";
-export * from "./Toast";
-export * from "./types";
-export default useNotification 
+import ReactDOM from "react-dom/client";
+import  { Toast } from "./Toast";
+
+const root = ReactDOM.createRoot(document.getElementById("root") as HTMLElement);
+root.render(<Toast/>);
