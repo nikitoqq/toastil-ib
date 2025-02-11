@@ -1,36 +1,19 @@
 // src/hooks/UseNotification.tsx
 import { useState } from "react";
-
-// src/components/Context/index.tsx
-import React from "react";
-import { createContext } from "react";
-var notifyContext = createContext({});
-var NotifyContextProvider = ({
-  children
-}) => {
-  const { toast, addToast, deleteToast } = useNotification();
-  const value = {
-    toast,
-    addToast,
-    deleteToast
-  };
-  return /* @__PURE__ */ React.createElement(notifyContext.Provider, { value }, children);
-};
-
-// src/hooks/UseNotification.tsx
 var useNotification = () => {
-  const [id, setId] = useState("0");
-  const [toast, setToast] = useState(notifyContext);
+  const [toast, setToast] = useState([]);
   const deleteToast = (e) => {
     setToast(
-      (prev) => prev.filter((el) => el.id !== e.target.id)
+      (prev) => prev.filter((el) => {
+        el.id !== e.target.id;
+      })
     );
   };
   const addToast = (obj) => {
-    setId((prev) => `${+prev + 1}`);
     if (toast.length === 0) {
       obj.item = 0;
-      setToast((prev) => [...prev, obj]);
+      setToast([obj]);
+      return { toast, addToast, deleteToast };
     }
     const itemPos = toast.reduce((acc, cur) => {
       if (cur.position === obj.position) {
@@ -44,12 +27,16 @@ var useNotification = () => {
   return { toast, addToast, deleteToast };
 };
 
-// src/Toast.tsx
-import React4, { useContext } from "react";
+// src/context/index.tsx
+import React4 from "react";
+import { createContext } from "react";
+
+// src/toast.tsx
+import React3, { useContext } from "react";
 import { ThemeProvider } from "styled-components";
 
 // src/components/Toastify/index.tsx
-import React3 from "react";
+import React2 from "react";
 
 // src/theme.ts
 var themeStyle = {
@@ -226,7 +213,7 @@ var setSpace = (position, pos, item) => {
 };
 
 // src/components/SvgIcon/index.tsx
-import React2 from "react";
+import React from "react";
 
 // src/components/SvgIcon/styled.ts
 import styled from "styled-components";
@@ -238,7 +225,7 @@ var ImageType = styled("svg")`
 
 // src/components/SvgIcon/index.tsx
 var SvgIcon = ({ path, color }) => {
-  return /* @__PURE__ */ React2.createElement(ImageType, { viewBox: "0 0 25 25", color, width: "25px", height: "25px", fill: "currentColor" }, /* @__PURE__ */ React2.createElement("path", { d: path }));
+  return /* @__PURE__ */ React.createElement(ImageType, { viewBox: "0 0 25 25", color, width: "25px", height: "25px", fill: "currentColor" }, /* @__PURE__ */ React.createElement("path", { d: path }));
 };
 
 // src/components/Toastify/styled.ts
@@ -653,7 +640,7 @@ var Loader = styled3(animationLoader)`
   bottom: 0%;
   background-color: black;
   position: absolute;
-  opacity: 0.1;
+  opacity: 0.2;
   width: 100%;
   height: 5px;
   border-bottom-left-radius: 5px;
@@ -720,22 +707,32 @@ var Toastify = ({
     autoClose,
     animation: setStateTransition(transition, position)
   };
-  return /* @__PURE__ */ React3.createElement(Toast, { style: toastStyle }, /* @__PURE__ */ React3.createElement(Row, null, /* @__PURE__ */ React3.createElement(Column, null, /* @__PURE__ */ React3.createElement(Tittle, { style: { color: toastStyle.h1 } }, title)), /* @__PURE__ */ React3.createElement(CancelColumn, null, /* @__PURE__ */ React3.createElement(
+  return /* @__PURE__ */ React2.createElement(Toast, { style: toastStyle }, /* @__PURE__ */ React2.createElement(Row, null, /* @__PURE__ */ React2.createElement(Column, null, /* @__PURE__ */ React2.createElement(Tittle, { style: { color: toastStyle.h1 } }, title)), /* @__PURE__ */ React2.createElement(CancelColumn, null, /* @__PURE__ */ React2.createElement(
     Cancel,
     {
       id,
       onClick: deleteToast,
       style: { backgroundColor: toastStyle.backgroundColor }
     },
-    /* @__PURE__ */ React3.createElement(Image, { src: "./f", alt: "cancel" })
-  ))), /* @__PURE__ */ React3.createElement(Row, null, /* @__PURE__ */ React3.createElement(Column, null, /* @__PURE__ */ React3.createElement(SvgIcon, { color: toastStyle.iconColor, path: toastStyle.src }), /* @__PURE__ */ React3.createElement(Message, { style: { color: toastStyle.h2 } }, text))), /* @__PURE__ */ React3.createElement(
+    /* @__PURE__ */ React2.createElement(
+      "svg",
+      {
+        viewBox: "0 0 25 25",
+        color: "gray",
+        width: "25px",
+        height: "25px",
+        fill: "currentColor"
+      },
+      /* @__PURE__ */ React2.createElement("path", { d: "M7.71 8.23l3.75 3.75-1.48 1.48-3.75-3.75-3.75 3.75L1 11.98l3.75-3.75L1 4.48 2.48 3l3.75 3.75L9.98 3l1.48 1.48-3.75 3.75z" })
+    )
+  ))), /* @__PURE__ */ React2.createElement(Row, null, /* @__PURE__ */ React2.createElement(Column, null, /* @__PURE__ */ React2.createElement(SvgIcon, { color: toastStyle.iconColor, path: toastStyle.src }), /* @__PURE__ */ React2.createElement(Message, { style: { color: toastStyle.h2 } }, text))), /* @__PURE__ */ React2.createElement(
     Loader,
     {
       id,
       onAnimationEnd: deleteToast,
       property: toastStyle.autoClose
     }
-  ), /* @__PURE__ */ React3.createElement(HiddenLoader, { style: { backgroundColor: toastStyle.barColor } }));
+  ), /* @__PURE__ */ React2.createElement(HiddenLoader, { style: { backgroundColor: toastStyle.barColor } }));
 };
 
 // src/globalStyle.ts
@@ -748,11 +745,10 @@ var GlobalStyle = createGlobalStyle`
 }
 `;
 
-// src/Toast.tsx
+// src/toast.tsx
 var Toast2 = () => {
-  const toast = useContext(notifyContext);
-  const deleteToast = useContext(notifyContext);
-  return /* @__PURE__ */ React4.createElement(ThemeProvider, { theme: themeStyle }, /* @__PURE__ */ React4.createElement(GlobalStyle, null), toast.map((el, index) => /* @__PURE__ */ React4.createElement(
+  const { toast, deleteToast } = useContext(notifyContext);
+  return /* @__PURE__ */ React3.createElement(ThemeProvider, { theme: themeStyle }, /* @__PURE__ */ React3.createElement(GlobalStyle, null), toast.map((el, index) => /* @__PURE__ */ React3.createElement(
     Toastify,
     {
       deleteToast,
@@ -770,10 +766,19 @@ var Toast2 = () => {
   )));
 };
 
+// src/context/index.tsx
+var notifyContext = createContext([]);
+var NotifyProvider = ({
+  children,
+  value
+}) => {
+  return /* @__PURE__ */ React4.createElement(notifyContext.Provider, { value }, /* @__PURE__ */ React4.createElement(Toast2, null), children);
+};
+
 // src/index.tsx
 var index_default = useNotification;
 export {
-  NotifyContextProvider,
+  NotifyProvider,
   Toast2 as Toast,
   index_default as default,
   notifyContext

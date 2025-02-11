@@ -56,7 +56,15 @@ export const Toastify = ({
             onClick={deleteToast}
             style={{ backgroundColor: toastStyle.backgroundColor }}
           >
-            <Image src="./f" alt="cancel" />
+            <svg
+              viewBox="0 0 25 25"
+              color="gray"
+              width="25px"
+              height="25px"
+              fill="currentColor"
+            >
+              <path d="M7.71 8.23l3.75 3.75-1.48 1.48-3.75-3.75-3.75 3.75L1 11.98l3.75-3.75L1 4.48 2.48 3l3.75 3.75L9.98 3l1.48 1.48-3.75 3.75z"></path>
+            </svg>
           </Cancel>
         </CancelColumn>
       </Row>

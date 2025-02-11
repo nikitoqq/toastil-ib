@@ -25,7 +25,7 @@ export const Loader = styled(animationLoader)`
   bottom: 0%;
   background-color: black;
   position: absolute;
-  opacity: 0.1;
+  opacity: 0.2;
   width: 100%;
   height: 5px;
   border-bottom-left-radius: 5px;

@@ -41,16 +41,20 @@ interface ToastStyle {
 
 declare const useNotification: () => {
     toast: any;
-    addToast: (obj: ToastProps) => void;
+    addToast: (obj: ToastProps) => {
+        toast: any;
+        addToast: /*elided*/ any;
+        deleteToast: (e: any) => void;
+    } | undefined;
     deleteToast: (e: any) => void;
 };
 
-declare const notifyContext: React.Context<NotifyContextType>;
-declare const NotifyContextProvider: ({ children, }: {
+declare const notifyContext: React.Context<never[]>;
+declare const NotifyProvider: ({ children, value, }: {
     children: React.ReactNode;
     value: any;
 }) => React.JSX.Element;
 
 declare const Toast: () => React.JSX.Element;
 
-export { NotifyContextProvider, type NotifyContextType, type SvgType, Toast, type ToastProps, type ToastStyle, useNotification as default, notifyContext };
+export { type NotifyContextType, NotifyProvider, type SvgType, Toast, type ToastProps, type ToastStyle, useNotification as default, notifyContext };

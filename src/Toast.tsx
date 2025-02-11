@@ -3,14 +3,14 @@ import { ThemeProvider } from "styled-components";
 
 import { Toastify } from "./components/Toastify";
 
-import { notifyContext } from "./components/Context";
+import { notifyContext } from "./context";
 
 import { themeStyle } from "./theme";
 import { GlobalStyle } from "./globalStyle";
 
 export const Toast = () => {
-  const toast = useContext<any>(notifyContext);
-  const deleteToast = useContext(notifyContext);
+
+  const {toast, deleteToast} = useContext<any>(notifyContext)
 
   return (
       <ThemeProvider theme={themeStyle}>
