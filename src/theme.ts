@@ -23,7 +23,8 @@ export const themeStyle = {
       backgroundColor: "#fff",
     },
     default: {
-      barColor: "#64b0e3",
+      barColor:
+        "linear-gradient(90deg, #1dfdf7 15%, #f06b8a 30%, #82b6ea 45%, #6ae160 60%, #b280fb 75%)",
       backgroundColor: "#fff",
     },
   },
@@ -51,7 +52,8 @@ export const themeStyle = {
       backgroundColor: "#000",
     },
     default: {
-      barColor: "#64b0e3",
+      barColor:
+        "linear-gradient(90deg, #1dfdf7, #f06b8a, #82b6ea, #6ae160, #b280fb)",
       iconColor: "#fff",
       backgroundColor: "#000",
     },
@@ -80,7 +82,8 @@ export const themeStyle = {
       iconColor: "#fff",
     },
     default: {
-      barColor: "#64b0e3",
+      barColor:
+        "linear-gradient(90deg, rgba(29,253,247,1) 14%, rgba(240,107,138,1) 33%, rgba(130,182,234,1) 53%, rgba(106,225,96,1) 75%, rgba(178,128,251,1))",
       iconColor: "#fff",
     },
   },

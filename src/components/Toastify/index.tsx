@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   setStateTypes,
   setStateStyle,
@@ -16,11 +16,12 @@ import {
   Loader,
   Cancel,
   CancelColumn,
-  Image,
   Tittle,
   HiddenLoader,
 } from "./styled";
+
 import { ToastProps, ToastStyle } from "../../types";
+import { animation } from "./animation";
 
 export const Toastify = ({
   title,
@@ -34,7 +35,7 @@ export const Toastify = ({
   id,
   item,
 }: ToastProps) => {
-  const toastStyle: ToastStyle = {
+  const [toastStyle, setToast] = useState<ToastStyle>({
     text: text,
     title: title,
     src: setStateTypes(type),
@@ -42,6 +43,19 @@ export const Toastify = ({
     ...setStateStyle(position, item),
     autoClose: autoClose,
     animation: setStateTransition(transition, position),
+  });
+
+  console.log(toastStyle.barColor);
+
+  const funcDelete = (e: any) => {
+    setToast({
+      ...toastStyle,
+      animation: setStateTransition(transition, position, "-reverse"),
+    });
+    console.log(toastStyle.animation);
+    setTimeout(() => {
+      deleteToast(e);
+    }, 500);
   };
 
   return (
@@ -52,11 +66,11 @@ export const Toastify = ({
         </Column>
         <CancelColumn>
           <Cancel
-            id={id}
-            onClick={deleteToast}
+            onClick={funcDelete}
             style={{ backgroundColor: toastStyle.backgroundColor }}
           >
             <svg
+              id={id}
               viewBox="0 0 25 25"
               color="gray"
               width="25px"
@@ -76,10 +90,10 @@ export const Toastify = ({
       </Row>
       <Loader
         id={id}
-        onAnimationEnd={deleteToast}
+        onAnimationEnd={funcDelete}
         property={toastStyle.autoClose}
       />
-      <HiddenLoader style={{ backgroundColor: toastStyle.barColor }} />
+      <HiddenLoader style={{ background: toastStyle.barColor }} />
     </Toast>
   );
 };

@@ -70,6 +70,8 @@ export const Tittle = styled("h1")`
 
 export const Cancel = styled("button")`
   border: 0px;
+  width: 25px;
+  height: 25px;
 `;
 
 export const Image = styled("img")`

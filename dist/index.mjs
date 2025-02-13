@@ -1,15 +1,18 @@
 // src/hooks/UseNotification.tsx
 import { useState } from "react";
 var useNotification = () => {
+  const [id, setId] = useState("0");
   const [toast, setToast] = useState([]);
   const deleteToast = (e) => {
     setToast(
       (prev) => prev.filter((el) => {
-        el.id !== e.target.id;
+        return e.target.id !== el.id;
       })
     );
   };
   const addToast = (obj) => {
+    obj.id = id;
+    setId((prev) => `${+prev + 1}`);
     if (toast.length === 0) {
       obj.item = 0;
       setToast([obj]);
@@ -36,7 +39,7 @@ import React3, { useContext } from "react";
 import { ThemeProvider } from "styled-components";
 
 // src/components/Toastify/index.tsx
-import React2 from "react";
+import React2, { useState as useState2 } from "react";
 
 // src/theme.ts
 var themeStyle = {
@@ -64,7 +67,7 @@ var themeStyle = {
       backgroundColor: "#fff"
     },
     default: {
-      barColor: "#64b0e3",
+      barColor: "linear-gradient(90deg, #1dfdf7 15%, #f06b8a 30%, #82b6ea 45%, #6ae160 60%, #b280fb 75%)",
       backgroundColor: "#fff"
     }
   },
@@ -92,7 +95,7 @@ var themeStyle = {
       backgroundColor: "#000"
     },
     default: {
-      barColor: "#64b0e3",
+      barColor: "linear-gradient(90deg, #1dfdf7, #f06b8a, #82b6ea, #6ae160, #b280fb)",
       iconColor: "#fff",
       backgroundColor: "#000"
     }
@@ -121,7 +124,7 @@ var themeStyle = {
       iconColor: "#fff"
     },
     default: {
-      barColor: "#64b0e3",
+      barColor: "linear-gradient(90deg, rgba(29,253,247,1) 14%, rgba(240,107,138,1) 33%, rgba(130,182,234,1) 53%, rgba(106,225,96,1) 75%, rgba(178,128,251,1))",
       iconColor: "#fff"
     }
   }
@@ -179,14 +182,15 @@ var setStateTheme = (theme, type) => {
   };
 };
 var setStateTransition = (transition, position, revers) => {
+  revers = typeof revers === "undefined" ? "" : revers;
   if (transition === "slide") {
-    return `0.5s linear 0s alternate ${position === "bottom-right" ? "slide-bottom-right" : position === "bottom-center" ? "slide-bottom-center" : position === "bottom-left" ? "slide-bottom-left" : position === "top-left" ? "slide-top-left" : position === "top-center" ? "slide-top-center" : "slide-top-right"}`;
+    return `0.5s linear 0s alternate ${position === "bottom-right" ? "slide-bottom-right" : position === "bottom-center" ? "slide-bottom-center" : position === "bottom-left" ? "slide-bottom-left" : position === "top-left" ? "slide-top-left" : position === "top-center" ? "slide-top-center" : "slide-top-right"}${revers}`;
   } else if (transition === "bounce") {
     return `0.5s linear 0s alternate ${position === "bottom-right" ? "bounce-bottom-right" : position === "bottom-center" ? "bounce-bottom-center" : position === "bottom-left" ? "bounce-bottom-left" : position === "top-left" ? "bounce-top-left" : position === "top-center" ? "bounce-top-center" : "bounce-top-right"}${revers}`;
   } else if (transition === "zoom") {
-    return `0.5s ease alternate zoom${revers}`;
+    return `0.5s ease alternate ${position === "bottom-center" || position === "top-center" ? "zoom-center" : "zoom"}${revers}`;
   } else if (transition === "flip") {
-    return `0.5s ease alternate flip${revers}`;
+    return `0.5s ease alternate ${position === "bottom-center" || position === "top-center" ? "flip-center" : "flip"}${revers}`;
   }
 };
 var setSpace = (position, pos, item) => {
@@ -281,11 +285,11 @@ var animation = styled2("div")`
   }
 
   @keyframes slide-bottom-center {
-    from {
-      transform: translate(50%, 100vh);
+    0% {
+      transform: translate(-50%, 100vh);
     }
-    to {
-      transform: translate(50%, 0vh);
+    100% {
+      transform: translate(-50%, 0vh);
     }
   }
 
@@ -318,19 +322,19 @@ var animation = styled2("div")`
 
   @keyframes bounce-top-center {
     0% {
-      transform: translateY(-100vh);
+      transform: translate(-50%, -100vh);
     }
     50% {
-      transform: translateY(5vh);
+      transform: translate(-50%, 5vh);
     }
     70% {
-      transform: translateY(-3vh);
+      transform: translate(-50%, -3vh);
     }
     90% {
-      transform: translateY(2vh);
+      transform: translate(-50%, 2vh);
     }
     100% {
-      transform: translateY(0vh);
+      transform: translate(-50%, 0vh);
     }
   }
 
@@ -372,19 +376,19 @@ var animation = styled2("div")`
 
   @keyframes bounce-bottom-center {
     0% {
-      transform: translateY(100vh);
+      transform: translate(-50%, 100vh);
     }
     50% {
-      transform: translateY(-5vh);
+      transform: translate(-50%, -5vh);
     }
     70% {
-      transform: translateY(3vh);
+      transform: translate(-50%, 3vh);
     }
     90% {
-      transform: translateY(-2vh);
+      transform: translate(-50%, -2vh);
     }
     100% {
-      transform: translateY(0vh);
+      transform: translate(-50%, 0vh);
     }
   }
 
@@ -415,6 +419,15 @@ var animation = styled2("div")`
     }
   }
 
+  @keyframes zoom-center {
+    from {
+      transform: scale(0) translateX(-50%);
+    }
+    to {
+      transform: scale(1) translateX(-50%);
+    }
+  }
+
   @keyframes flip {
     0% {
       transform: perspective(400px) rotateX(-25deg) scale(1);
@@ -426,6 +439,21 @@ var animation = styled2("div")`
     }
     100% {
       transform: perspective(400px) scale(1);
+      animation-timing-function: ease-in;
+    }
+  }
+
+  @keyframes flip-center {
+    0% {
+      transform: perspective(400px) rotateX(-25deg) scale(1) translateX(-50%);
+      animation-timing-function: ease-in;
+    }
+    50% {
+      transform: perspective(400px) translateX(-50%);
+      animation-timing-function: ease-out;
+    }
+    100% {
+      transform: perspective(400px) scale(1) translateX(-50%);
       animation-timing-function: ease-in;
     }
   }
@@ -468,10 +496,10 @@ var animation = styled2("div")`
 
   @keyframes slide-bottom-center-reverse {
     from {
-      transform: translate(50%, 0vh);
+      transform: translate(-50%, 0vh);
     }
     to {
-      transform: translate(50%, 100vh);
+      transform: translate(-50%, 100vh);
     }
   }
 
@@ -504,19 +532,19 @@ var animation = styled2("div")`
 
   @keyframes bounce-top-center-reverse {
     0% {
-      transform: translateY(0vh);
+      transform: translate(-50%, 0vh);
     }
     50% {
-      transform: translateY(2vh);
+      transform: translate(-50%, 2vh);
     }
     70% {
-      transform: translateY(-3vh);
+      transform: translate(-50%, -3vh);
     }
     90% {
-      transform: translateY(5vh);
+      transform: translate(-50%, 5vh);
     }
     100% {
-      transform: translateY(-100vh);
+      transform: translate(-50%, -100vh);
     }
   }
 
@@ -558,19 +586,19 @@ var animation = styled2("div")`
 
   @keyframes bounce-bottom-center-reverse {
     0% {
-      transform: translateY(0vh);
+      transform: translate(-50%, 0vh);
     }
     50% {
-      transform: translateY(-2vh);
+      transform: translate(-50%, -2vh);
     }
     70% {
-      transform: translateY(3vh);
+      transform: translate(-50%, 3vh);
     }
     90% {
-      transform: translateY(-5vh);
+      transform: translate(-50%, -5vh);
     }
     100% {
-      transform: translateY(100vh);
+      transform: translate(-50%, 100vh);
     }
   }
 
@@ -679,6 +707,8 @@ var Tittle = styled3("h1")`
 `;
 var Cancel = styled3("button")`
   border: 0px;
+  width: 25px;
+  height: 25px;
 `;
 var Image = styled3("img")`
   width: 20px;
@@ -698,7 +728,7 @@ var Toastify = ({
   id,
   item
 }) => {
-  const toastStyle = {
+  const [toastStyle, setToast] = useState2({
     text,
     title,
     src: setStateTypes(type),
@@ -706,17 +736,28 @@ var Toastify = ({
     ...setStateStyle(position, item),
     autoClose,
     animation: setStateTransition(transition, position)
+  });
+  console.log(toastStyle.barColor);
+  const funcDelete = (e) => {
+    setToast({
+      ...toastStyle,
+      animation: setStateTransition(transition, position, "-reverse")
+    });
+    console.log(toastStyle.animation);
+    setTimeout(() => {
+      deleteToast(e);
+    }, 500);
   };
   return /* @__PURE__ */ React2.createElement(Toast, { style: toastStyle }, /* @__PURE__ */ React2.createElement(Row, null, /* @__PURE__ */ React2.createElement(Column, null, /* @__PURE__ */ React2.createElement(Tittle, { style: { color: toastStyle.h1 } }, title)), /* @__PURE__ */ React2.createElement(CancelColumn, null, /* @__PURE__ */ React2.createElement(
     Cancel,
     {
-      id,
-      onClick: deleteToast,
+      onClick: funcDelete,
       style: { backgroundColor: toastStyle.backgroundColor }
     },
     /* @__PURE__ */ React2.createElement(
       "svg",
       {
+        id,
         viewBox: "0 0 25 25",
         color: "gray",
         width: "25px",
@@ -729,10 +770,10 @@ var Toastify = ({
     Loader,
     {
       id,
-      onAnimationEnd: deleteToast,
+      onAnimationEnd: funcDelete,
       property: toastStyle.autoClose
     }
-  ), /* @__PURE__ */ React2.createElement(HiddenLoader, { style: { backgroundColor: toastStyle.barColor } }));
+  ), /* @__PURE__ */ React2.createElement(HiddenLoader, { style: { background: toastStyle.barColor } }));
 };
 
 // src/globalStyle.ts
@@ -748,7 +789,7 @@ var GlobalStyle = createGlobalStyle`
 // src/toast.tsx
 var Toast2 = () => {
   const { toast, deleteToast } = useContext(notifyContext);
-  return /* @__PURE__ */ React3.createElement(ThemeProvider, { theme: themeStyle }, /* @__PURE__ */ React3.createElement(GlobalStyle, null), toast.map((el, index) => /* @__PURE__ */ React3.createElement(
+  return /* @__PURE__ */ React3.createElement(ThemeProvider, { theme: themeStyle }, /* @__PURE__ */ React3.createElement(GlobalStyle, null), toast.map((el) => /* @__PURE__ */ React3.createElement(
     Toastify,
     {
       deleteToast,
@@ -759,8 +800,8 @@ var Toast2 = () => {
       theme: el.theme,
       transition: el.transition,
       autoClose: el.autoClose,
-      id: index,
-      key: index,
+      id: el.id,
+      key: el.id,
       item: el.item
     }
   )));

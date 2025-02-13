@@ -15,7 +15,7 @@ export const Toast = () => {
   return (
       <ThemeProvider theme={themeStyle}>
         <GlobalStyle />
-        {toast.map((el: any, index: any) => (
+        {toast.map((el: any) => (
           <Toastify
             deleteToast={deleteToast}
             position={el.position}
@@ -25,8 +25,8 @@ export const Toast = () => {
             theme={el.theme}
             transition={el.transition}
             autoClose={el.autoClose}
-            id={index}
-            key={index}
+            id={el.id}
+            key={el.id}
             item={el.item}
           />
         ))}

@@ -100,6 +100,8 @@ export const setStateTransition = (
   position: string,
   revers?: string
 ) => {
+  revers = typeof revers === "undefined" ? "" : revers;
+
   if (transition === "slide") {
     return `0.5s linear 0s alternate ${
       position === "bottom-right"
@@ -113,7 +115,7 @@ export const setStateTransition = (
         : position === "top-center"
         ? "slide-top-center"
         : "slide-top-right"
-    }`;
+    }${revers}`;
   } else if (transition === "bounce") {
     return `0.5s linear 0s alternate ${
       position === "bottom-right"
@@ -129,9 +131,17 @@ export const setStateTransition = (
         : "bounce-top-right"
     }${revers}`;
   } else if (transition === "zoom") {
-    return `0.5s ease alternate zoom${revers}`;
+    return `0.5s ease alternate ${
+      position === "bottom-center" || position === "top-center"
+        ? "zoom-center"
+        : "zoom"
+    }${revers}`;
   } else if (transition === "flip") {
-    return `0.5s ease alternate flip${revers}`;
+    return `0.5s ease alternate ${
+      position === "bottom-center" || position === "top-center"
+        ? "flip-center"
+        : "flip"
+    }${revers}`;
   }
 };
 

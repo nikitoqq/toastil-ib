@@ -13,7 +13,7 @@ interface ToastProps {
     transition: "bounce" | "slide" | "zoom" | "flip";
     autoClose: string;
     deleteToast?: any;
-    id?: string;
+    id: string;
     item?: number;
 }
 interface NotifyContextType {
@@ -37,6 +37,7 @@ interface ToastStyle {
     src: string;
     text?: string;
     title?: string;
+    id: string;
 }
 
 declare const useNotification: () => {

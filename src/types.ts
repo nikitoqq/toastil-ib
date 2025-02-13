@@ -18,7 +18,7 @@ export interface ToastProps {
   transition: "bounce" | "slide" | "zoom" | "flip";
   autoClose: string;
   deleteToast?: any;
-  id?: string;
+  id: string;
   item?: number;
 }
 
@@ -44,4 +44,5 @@ export interface ToastStyle {
   src: string;
   text?: string;
   title?: string;
+  id: string
 }
