@@ -1,5 +1,5 @@
-import { useNotification } from "./hooks/UseNotification";
+import { useNotification } from "./hooks/useNotification";
 export * from "./context";
-export * from "./toast";
+export * from "./toast"; // че это
 export * from "./types";
 export default useNotification;

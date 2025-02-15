@@ -1,9 +1,11 @@
 import { useState } from "react";
 import { ToastProps } from "../types";
 
+// название файла с маленькой
+
 export const useNotification = () => {
-  const [id, setId] = useState<string>("0");
-  const [toast, setToast] = useState<any>([]);
+  const [id, setId] = useState<string>("0"); // uuid для id
+  const [toast, setToast] = useState<any>([]); // any
 
   const deleteToast = (e: any) => {
     setToast((prev: object[]) =>
@@ -14,7 +16,7 @@ export const useNotification = () => {
   };
 
   const addToast = (obj: ToastProps) => {
-    obj.id = ` ${id}`;
+    obj.id = ` ${id}`; // не понял
     setId((prev) => `${+prev + 1}`);
     if (toast.length === 0) {
       obj.item = 0;

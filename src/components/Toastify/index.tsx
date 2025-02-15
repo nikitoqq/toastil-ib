@@ -21,7 +21,7 @@ import {
 } from "./styled";
 
 import { ToastProps, ToastStyle } from "../../types";
-import { animation } from "./animation";
+import { animation } from "./animation"; // лишний импорт
 
 export const Toastify = ({
   title,
@@ -45,7 +45,7 @@ export const Toastify = ({
     animation: setStateTransition(transition, position),
   });
 
-  console.log(toastStyle.barColor);
+  console.log(toastStyle.barColor); // :)
 
   const funcDelete = (e: any) => {
     setToast({
@@ -77,6 +77,7 @@ export const Toastify = ({
               height="25px"
               fill="currentColor"
             >
+              {/* // это че */}
               <path d="M7.71 8.23l3.75 3.75-1.48 1.48-3.75-3.75-3.75 3.75L1 11.98l3.75-3.75L1 4.48 2.48 3l3.75 3.75L9.98 3l1.48 1.48-3.75 3.75z"></path>
             </svg>
           </Cancel>
