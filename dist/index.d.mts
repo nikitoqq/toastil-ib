@@ -13,7 +13,7 @@ interface ToastProps {
     transition: "bounce" | "slide" | "zoom" | "flip";
     autoClose: string;
     deleteToast?: any;
-    id: string;
+    id?: string;
     item?: number;
 }
 interface NotifyContextType {

@@ -393,6 +393,16 @@ export const animation = styled("div")`
     }
   }
 
+  @keyframes zoom-center-reverse {
+    from {
+      transform: scale(1) translateX(-50%);
+    }
+    to {
+      transform: scale(0) translateX(-50%);
+    }
+  }
+
+
   @keyframes flip-reverse {
     0% {
       transform: perspective(400px) scale(1);
@@ -407,4 +417,20 @@ export const animation = styled("div")`
       animation-timing-function: ease-in;
     }
   }
+
+  @keyframes flip-center-reverse {
+    0% {
+      transform: perspective(400px) scale(1) translateX(-50%);
+      animation-timing-function: ease-in;
+    }
+    50% {
+      transform: perspective(400px) translateX(-50%);
+      animation-timing-function: ease-out;
+    }
+    100% {
+      transform: perspective(400px) rotateX(-25deg) scale(1) translateX(-50%);
+      animation-timing-function: ease-in;
+    }
+  }
 `;
+

@@ -11,7 +11,7 @@ var useNotification = () => {
     );
   };
   const addToast = (obj) => {
-    obj.id = id;
+    obj.id = ` ${id}`;
     setId((prev) => `${+prev + 1}`);
     if (toast.length === 0) {
       obj.item = 0;
@@ -629,6 +629,16 @@ var animation = styled2("div")`
     }
   }
 
+  @keyframes zoom-center-reverse {
+    from {
+      transform: scale(1) translateX(-50%);
+    }
+    to {
+      transform: scale(0) translateX(-50%);
+    }
+  }
+
+
   @keyframes flip-reverse {
     0% {
       transform: perspective(400px) scale(1);
@@ -640,6 +650,21 @@ var animation = styled2("div")`
     }
     100% {
       transform: perspective(400px) rotateX(-25deg) scale(1);
+      animation-timing-function: ease-in;
+    }
+  }
+
+  @keyframes flip-center-reverse {
+    0% {
+      transform: perspective(400px) scale(1) translateX(-50%);
+      animation-timing-function: ease-in;
+    }
+    50% {
+      transform: perspective(400px) translateX(-50%);
+      animation-timing-function: ease-out;
+    }
+    100% {
+      transform: perspective(400px) rotateX(-25deg) scale(1) translateX(-50%);
       animation-timing-function: ease-in;
     }
   }
