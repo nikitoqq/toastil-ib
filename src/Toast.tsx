@@ -9,13 +9,15 @@ import { themeStyle } from "./theme";
 import { GlobalStyle } from "./globalStyle";
 
 export const Toast = () => {
-
-  const {toast, deleteToast} = useContext<any>(notifyContext)
+  const { toast, deleteToast } = useContext<any>(notifyContext); // any
 
   return (
-      <ThemeProvider theme={themeStyle}>
-        <GlobalStyle />
-        {toast.map((el: any) => (
+    <ThemeProvider theme={themeStyle}>
+      <GlobalStyle />
+      {toast.map(
+        (
+          el: any // any
+        ) => (
           <Toastify
             deleteToast={deleteToast}
             position={el.position}
@@ -29,7 +31,8 @@ export const Toast = () => {
             key={el.id}
             item={el.item}
           />
-        ))}
-      </ThemeProvider>
+        )
+      )}
+    </ThemeProvider>
   );
 };

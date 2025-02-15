@@ -1,18 +1,21 @@
 export interface SvgType {
   path: string;
   color?: string;
+  size?: number;
 }
+
+export type Position =
+  | "top-right"
+  | "top-left"
+  | "top-center"
+  | "bottom-right"
+  | "bottom-left"
+  | "bottom-center";
 
 export interface ToastProps {
   title: string;
   text: string;
-  position:
-    | "top-right"
-    | "top-left"
-    | "top-center"
-    | "bottom-right"
-    | "bottom-left"
-    | "bottom-center";
+  position: Position;
   type: "info" | "success" | "warning" | "error" | "default";
   theme: "light" | "dark" | "colored";
   transition: "bounce" | "slide" | "zoom" | "flip";
@@ -23,12 +26,13 @@ export interface ToastProps {
 }
 
 export interface NotifyContextType {
-  toast?: object[],
-  addToast?: any,
-  deleteToast?: any
+  toast?: object[]; // уточни
+  addToast?: any;
+  deleteToast?: any;
 }
 
 export interface ToastStyle {
+  // почему все optional
   animation?: string;
   autoClose?: string;
   bottom?: string;
@@ -44,5 +48,5 @@ export interface ToastStyle {
   src: string;
   text?: string;
   title?: string;
-  id: string
+  id: string;
 }
