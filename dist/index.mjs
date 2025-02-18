@@ -1,131 +1,122 @@
-// src/hooks/UseNotification.tsx
-import { useState } from "react";
-var useNotification = () => {
-  const [id, setId] = useState("0");
-  const [toast, setToast] = useState([]);
-  const deleteToast = (e) => {
-    setToast(
-      (prev) => prev.filter((el) => {
-        return e.target.id !== el.id;
-      })
-    );
-  };
-  const addToast = (obj) => {
-    obj.id = ` ${id}`;
-    setId((prev) => `${+prev + 1}`);
-    if (toast.length === 0) {
-      obj.item = 0;
-      setToast([obj]);
-      return { toast, addToast, deleteToast };
-    }
-    const itemPos = toast.reduce((acc, cur) => {
-      if (cur.position === obj.position) {
-        acc += 1;
-      }
-      return acc;
-    }, 0);
-    obj.item = itemPos;
-    setToast((prev) => [...prev, obj]);
-  };
-  return { toast, addToast, deleteToast };
-};
+import React2, { createContext, useContext, useState } from 'react';
+import styled3, { createGlobalStyle, ThemeProvider } from 'styled-components';
 
 // src/context/index.tsx
-import React4 from "react";
-import { createContext } from "react";
-
-// src/toast.tsx
-import React3, { useContext } from "react";
-import { ThemeProvider } from "styled-components";
-
-// src/components/Toastify/index.tsx
-import React2, { useState as useState2 } from "react";
 
 // src/theme.ts
+var colors = {
+  white: "#fff",
+  beige: "#f1f1f1",
+  blue: "#3498db",
+  lightBlue: "#64b0e3",
+  black: "#000",
+  gray: "#5d5d5d",
+  lightGray: "#757575",
+  red: "#e74d3c",
+  lightRed: "#ea776a",
+  green: "#0bb210",
+  lightGreen: "#42cc45",
+  orange: "#f1c40f",
+  lightOrange: "#f4d149",
+  gradient: "linear-gradient(90deg, #1dfdf7 15%, #f06b8a 30%, #82b6ea 45%, #6ae160 60%, #b280fb 75%)"
+};
+var spacings = {
+  primary: [
+    "2px",
+    "4px",
+    "8px",
+    "16px",
+    "20px",
+    "24px",
+    "32px",
+    "40px",
+    "52px"
+  ]
+};
 var themeStyle = {
   light: {
-    h1: "rgb(93, 93, 93)",
-    h2: "#757575",
+    h1: colors.gray,
+    h2: colors.lightGray,
     info: {
-      iconColor: "#3498db",
-      barColor: "#64b0e3",
-      backgroundColor: "#fff"
+      iconColor: colors.blue,
+      barColor: colors.lightBlue,
+      backgroundColor: colors.white
     },
     success: {
-      iconColor: "#0bb210",
-      barColor: "#42cc45",
-      backgroundColor: "#fff"
+      iconColor: colors.green,
+      barColor: colors.lightGreen,
+      backgroundColor: colors.white
     },
     warning: {
-      iconColor: "#f1c40f",
-      barColor: "#f4d149",
-      backgroundColor: "#fff"
+      iconColor: colors.orange,
+      barColor: colors.lightOrange,
+      backgroundColor: colors.white
     },
     error: {
-      iconColor: "#e74d3c",
-      barColor: "#ea776a",
-      backgroundColor: "#fff"
+      iconColor: colors.red,
+      barColor: colors.lightRed,
+      backgroundColor: colors.white
     },
     default: {
-      barColor: "linear-gradient(90deg, #1dfdf7 15%, #f06b8a 30%, #82b6ea 45%, #6ae160 60%, #b280fb 75%)",
-      backgroundColor: "#fff"
+      barColor: colors.gradient,
+      backgroundColor: colors.white
     }
   },
   dark: {
-    h1: "rgb(255, 255, 255)",
-    h2: "rgb(241, 241, 241)",
+    h1: colors.white,
+    h2: colors.beige,
     info: {
-      barColor: "#64b0e3",
-      iconColor: "#fff",
-      backgroundColor: "#000"
+      barColor: colors.lightBlue,
+      iconColor: colors.white,
+      backgroundColor: colors.black
     },
     success: {
-      barColor: "#42cc45",
-      iconColor: "#fff",
-      backgroundColor: "#000"
+      barColor: colors.lightGreen,
+      iconColor: colors.white,
+      backgroundColor: colors.black
     },
     warning: {
-      barColor: "#f4d149",
-      iconColor: "#fff",
-      backgroundColor: "#000"
+      barColor: colors.lightOrange,
+      iconColor: colors.white,
+      backgroundColor: colors.black
     },
     error: {
-      barColor: "#ea776a",
-      iconColor: "#fff",
-      backgroundColor: "#000"
+      barColor: colors.lightRed,
+      iconColor: colors.white,
+      backgroundColor: colors.black
     },
     default: {
-      barColor: "linear-gradient(90deg, #1dfdf7, #f06b8a, #82b6ea, #6ae160, #b280fb)",
-      iconColor: "#fff",
-      backgroundColor: "#000"
+      barColor: colors.gradient,
+      iconColor: colors.white,
+      backgroundColor: colors.black
     }
   },
   colored: {
-    h1: "rgb(255, 255, 255)",
-    h2: "rgb(241, 241, 241)",
+    h1: colors.white,
+    h2: colors.beige,
     info: {
-      barColor: "#64b0e3",
-      backgroundColor: "#3498db",
-      iconColor: "#fff"
+      barColor: colors.lightBlue,
+      backgroundColor: colors.blue,
+      iconColor: colors.white
     },
     success: {
-      barColor: "#42cc45",
-      backgroundColor: "#0bb210",
-      iconColor: "#fff"
+      barColor: colors.lightGreen,
+      backgroundColor: colors.green,
+      iconColor: colors.white
     },
     warning: {
-      barColor: "#f4d149",
-      backgroundColor: "#f1c40f",
-      iconColor: "#fff"
+      barColor: colors.lightOrange,
+      backgroundColor: colors.orange,
+      iconColor: colors.white
     },
     error: {
-      barColor: "#ea776a",
-      backgroundColor: "#e74d3c",
-      iconColor: "#fff"
+      barColor: colors.lightRed,
+      backgroundColor: colors.red,
+      iconColor: colors.white
     },
     default: {
-      barColor: "linear-gradient(90deg, rgba(29,253,247,1) 14%, rgba(240,107,138,1) 33%, rgba(130,182,234,1) 53%, rgba(106,225,96,1) 75%, rgba(178,128,251,1))",
-      iconColor: "#fff"
+      barColor: colors.gradient,
+      iconColor: colors.white
     }
   }
 };
@@ -140,35 +131,33 @@ var toastIconLink = {
 };
 var toastStyleData = {
   topRight: {
-    top: "20px",
+    top: spacings.primary[4],
     right: "2vw"
   },
   topLeft: {
-    top: "20px",
+    top: spacings.primary[4],
     left: "2vw"
   },
   topCenter: {
     left: "50%",
     transform: "translate(-50%)",
-    top: "20px"
+    top: spacings.primary[4]
   },
   bottomRight: {
-    bottom: "20px",
+    bottom: spacings.primary[4],
     right: "2vw"
   },
   bottomLeft: {
-    bottom: "20px",
+    bottom: spacings.primary[4],
     left: "2vw"
   },
   bottomCenter: {
-    bottom: "20px",
+    bottom: spacings.primary[4],
     transform: "translate(-50%)",
     left: "50%"
   }
 };
-var setStateTypes = (type) => {
-  return type === "info" ? toastIconLink.info : type === "success" ? toastIconLink.success : type === "error" ? toastIconLink.error : type === "warning" ? toastIconLink.warning : toastIconLink.default;
-};
+var setStateTypes = (type) => toastIconLink[type] || toastIconLink.default;
 var setStateStyle = (position, item) => {
   const pos = position === "top-left" ? toastStyleData.topLeft : position === "top-center" ? toastStyleData.topCenter : position === "bottom-left" ? toastStyleData.bottomLeft : position === "bottom-center" ? toastStyleData.bottomCenter : position === "bottom-right" ? toastStyleData.bottomRight : toastStyleData.topRight;
   return setSpace(position, pos, item);
@@ -195,11 +184,11 @@ var setStateTransition = (transition, position, revers) => {
 };
 var setSpace = (position, pos, item) => {
   if (item === 0 && position.includes("top")) {
-    pos.top = "20px";
+    pos.top = spacings.primary[4];
     return pos;
   }
   if (item === 0 && position.includes("bottom")) {
-    pos.bottom = "20px";
+    pos.bottom = spacings.primary[4];
     return pos;
   }
   if (position.includes("top")) {
@@ -215,29 +204,27 @@ var setSpace = (position, pos, item) => {
     return pos;
   }
 };
-
-// src/components/SvgIcon/index.tsx
-import React from "react";
-
-// src/components/SvgIcon/styled.ts
-import styled from "styled-components";
-var ImageType = styled("svg")`
+var ImageType = styled3("svg")`
   width: 23px;
   height: 23px;
   margin: 0px 10px 10px 10px;
 `;
 
 // src/components/SvgIcon/index.tsx
-var SvgIcon = ({ path, color }) => {
-  return /* @__PURE__ */ React.createElement(ImageType, { viewBox: "0 0 25 25", color, width: "25px", height: "25px", fill: "currentColor" }, /* @__PURE__ */ React.createElement("path", { d: path }));
+var SvgIcon = ({ path, color, size = 25 }) => {
+  return /* @__PURE__ */ React2.createElement(
+    ImageType,
+    {
+      viewBox: "0 0 25 25",
+      color,
+      width: `${size}px`,
+      height: `${size}px`,
+      fill: "currentColor"
+    },
+    /* @__PURE__ */ React2.createElement("path", { d: path })
+  );
 };
-
-// src/components/Toastify/styled.ts
-import styled3 from "styled-components";
-
-// src/components/Toastify/animation.ts
-import styled2 from "styled-components";
-var animationLoader = styled2("div")`
+var animationLoader = styled3("div")`
   @keyframes load {
     0% {
       width: 100%;
@@ -247,7 +234,7 @@ var animationLoader = styled2("div")`
     }
   }
 `;
-var animation = styled2("div")`
+var animation = styled3("div")`
   @keyframes slide-top-left {
     from {
       transform: translateX(-50vh);
@@ -638,7 +625,6 @@ var animation = styled2("div")`
     }
   }
 
-
   @keyframes flip-reverse {
     0% {
       transform: perspective(400px) scale(1);
@@ -735,7 +721,7 @@ var Cancel = styled3("button")`
   width: 25px;
   height: 25px;
 `;
-var Image = styled3("img")`
+styled3("img")`
   width: 20px;
   height: 20px;
 `;
@@ -753,7 +739,7 @@ var Toastify = ({
   id,
   item
 }) => {
-  const [toastStyle, setToast] = useState2({
+  const [toastStyle, setToast] = useState({
     text,
     title,
     src: setStateTypes(type),
@@ -762,7 +748,6 @@ var Toastify = ({
     autoClose,
     animation: setStateTransition(transition, position)
   });
-  console.log(toastStyle.barColor);
   const funcDelete = (e) => {
     setToast({
       ...toastStyle,
@@ -780,16 +765,12 @@ var Toastify = ({
       style: { backgroundColor: toastStyle.backgroundColor }
     },
     /* @__PURE__ */ React2.createElement(
-      "svg",
+      SvgIcon,
       {
-        id,
-        viewBox: "0 0 25 25",
         color: "gray",
-        width: "25px",
-        height: "25px",
-        fill: "currentColor"
-      },
-      /* @__PURE__ */ React2.createElement("path", { d: "M7.71 8.23l3.75 3.75-1.48 1.48-3.75-3.75-3.75 3.75L1 11.98l3.75-3.75L1 4.48 2.48 3l3.75 3.75L9.98 3l1.48 1.48-3.75 3.75z" })
+        size: 25,
+        path: "M7.71 8.23l3.75 3.75-1.48 1.48-3.75-3.75-3.75 3.75L1 11.98l3.75-3.75L1 4.48 2.48 3l3.75 3.75L9.98 3l1.48 1.48-3.75 3.75z"
+      }
     )
   ))), /* @__PURE__ */ React2.createElement(Row, null, /* @__PURE__ */ React2.createElement(Column, null, /* @__PURE__ */ React2.createElement(SvgIcon, { color: toastStyle.iconColor, path: toastStyle.src }), /* @__PURE__ */ React2.createElement(Message, { style: { color: toastStyle.h2 } }, text))), /* @__PURE__ */ React2.createElement(
     Loader,
@@ -800,9 +781,6 @@ var Toastify = ({
     }
   ), /* @__PURE__ */ React2.createElement(HiddenLoader, { style: { background: toastStyle.barColor } }));
 };
-
-// src/globalStyle.ts
-import { createGlobalStyle } from "styled-components";
 var GlobalStyle = createGlobalStyle`
 * {
     margin: 0px;
@@ -811,10 +789,10 @@ var GlobalStyle = createGlobalStyle`
 }
 `;
 
-// src/toast.tsx
+// src/Toast.tsx
 var Toast2 = () => {
   const { toast, deleteToast } = useContext(notifyContext);
-  return /* @__PURE__ */ React3.createElement(ThemeProvider, { theme: themeStyle }, /* @__PURE__ */ React3.createElement(GlobalStyle, null), toast.map((el) => /* @__PURE__ */ React3.createElement(
+  return /* @__PURE__ */ React2.createElement(ThemeProvider, { theme: themeStyle }, /* @__PURE__ */ React2.createElement(GlobalStyle, null), typeof toast !== "undefined" ? toast.map((el) => /* @__PURE__ */ React2.createElement(
     Toastify,
     {
       deleteToast,
@@ -829,23 +807,38 @@ var Toast2 = () => {
       key: el.id,
       item: el.item
     }
-  )));
+  )) : void 0);
 };
 
 // src/context/index.tsx
-var notifyContext = createContext([]);
-var NotifyProvider = ({
-  children,
-  value
-}) => {
-  return /* @__PURE__ */ React4.createElement(notifyContext.Provider, { value }, /* @__PURE__ */ React4.createElement(Toast2, null), children);
+var notifyContext = createContext({});
+var NotifyProvider = ({ children, value }) => {
+  return /* @__PURE__ */ React2.createElement(notifyContext.Provider, { value }, /* @__PURE__ */ React2.createElement(Toast2, null), children);
+};
+var useNotification = () => {
+  const [id, setId] = useState("0");
+  const [toast, setToast] = useState();
+  const deleteToast = (e) => {
+    setToast(
+      (prevState) => prevState ? prevState.filter((el) => e.target.id !== el.id) : void 0
+    );
+  };
+  const addToast = (obj) => {
+    setId(`${+id + 1}`);
+    if (typeof toast === "undefined") {
+      [obj.item, obj.id] = [0, id];
+      setToast([obj]);
+      return { toast, addToast, deleteToast, id };
+    }
+    const itemPos = toast.reduce((acc, cur) => {
+      return cur.position === obj.position ? acc += 1 : acc;
+    }, 0);
+    [obj.id, obj.item] = [id, itemPos];
+    setToast(
+      (prevState) => prevState ? [...prevState, obj] : void 0
+    );
+  };
+  return { toast, addToast, deleteToast, id };
 };
 
-// src/index.tsx
-var index_default = useNotification;
-export {
-  NotifyProvider,
-  Toast2 as Toast,
-  index_default as default,
-  notifyContext
-};
+export { NotifyProvider, Toast2 as Toast, useNotification };

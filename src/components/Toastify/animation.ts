@@ -402,7 +402,6 @@ export const animation = styled("div")`
     }
   }
 
-
   @keyframes flip-reverse {
     0% {
       transform: perspective(400px) scale(1);
@@ -433,4 +432,3 @@ export const animation = styled("div")`
     }
   }
 `;
-

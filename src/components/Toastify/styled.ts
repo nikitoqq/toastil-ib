@@ -21,7 +21,7 @@ export const Row = styled("div")`
 
 export const Loader = styled(animationLoader)`
   display: flex;
-  animation: ${props => props.property}ms linear 0s alternate load;
+  animation: ${(props) => props.property}ms linear 0s alternate load;
   bottom: 0%;
   background-color: black;
   position: absolute;

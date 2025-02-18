@@ -1,16 +1,12 @@
-import React from "react";
-import { createContext } from "react";
-import { Toast } from "../toast";
+import React, { createContext } from "react";
 
-export const notifyContext = createContext([]);
+import { Toast } from "../Toast";
 
-export const NotifyProvider = ({
-  children,
-  value,
-}: {
-  children: React.ReactNode;
-  value: any;
-}) => {
+import { NotifyProviderType, ToastContextType } from "../types";
+
+export const notifyContext = createContext<ToastContextType>({});
+
+export const NotifyProvider = ({ children, value }: NotifyProviderType) => {
   return (
     <notifyContext.Provider value={value}>
       <Toast />

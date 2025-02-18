@@ -21,7 +21,9 @@ import {
 } from "./styled";
 
 import { ToastProps, ToastStyle } from "../../types";
-import { animation } from "./animation";
+
+const CANCEL_SVG_PATH =
+  "M7.71 8.23l3.75 3.75-1.48 1.48-3.75-3.75-3.75 3.75L1 11.98l3.75-3.75L1 4.48 2.48 3l3.75 3.75L9.98 3l1.48 1.48-3.75 3.75z";
 
 export const Toastify = ({
   title,
@@ -45,8 +47,6 @@ export const Toastify = ({
     animation: setStateTransition(transition, position),
   });
 
-  console.log(toastStyle.barColor);
-
   const funcDelete = (e: any) => {
     setToast({
       ...toastStyle,
@@ -69,16 +69,7 @@ export const Toastify = ({
             onClick={funcDelete}
             style={{ backgroundColor: toastStyle.backgroundColor }}
           >
-            <svg
-              id={id}
-              viewBox="0 0 25 25"
-              color="gray"
-              width="25px"
-              height="25px"
-              fill="currentColor"
-            >
-              <path d="M7.71 8.23l3.75 3.75-1.48 1.48-3.75-3.75-3.75 3.75L1 11.98l3.75-3.75L1 4.48 2.48 3l3.75 3.75L9.98 3l1.48 1.48-3.75 3.75z"></path>
-            </svg>
+            <SvgIcon color="gray" size={25} path={CANCEL_SVG_PATH} />
           </Cancel>
         </CancelColumn>
       </Row>

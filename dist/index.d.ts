@@ -1,13 +1,15 @@
-import React from 'react';
+import React$1 from 'react';
 
 interface SvgType {
     path: string;
     color?: string;
+    size?: number;
 }
+type Position = "top-right" | "top-left" | "top-center" | "bottom-right" | "bottom-left" | "bottom-center";
 interface ToastProps {
     title: string;
     text: string;
-    position: "top-right" | "top-left" | "top-center" | "bottom-right" | "bottom-left" | "bottom-center";
+    position: Position;
     type: "info" | "success" | "warning" | "error" | "default";
     theme: "light" | "dark" | "colored";
     transition: "bounce" | "slide" | "zoom" | "flip";
@@ -37,25 +39,46 @@ interface ToastStyle {
     src: string;
     text?: string;
     title?: string;
-    id: string;
+    id?: string;
+}
+interface ToastStyleDataType {
+    top?: string;
+    right?: string;
+    left?: string;
+    transform?: string;
+    bottom?: string;
+}
+interface ToastContextType {
+    toast?: ToastProps[];
+    addToast?: React.Dispatch<React.SetStateAction<ToastProps>>;
+    deleteToast?: React.Dispatch<React.SetStateAction<ToastProps>>;
+}
+interface NotifyProviderType {
+    children: React.ReactNode;
+    value: ToastContextType;
+}
+interface ToastIconLinkType {
+    info: string;
+    error: string;
+    success: string;
+    warning: string;
+    default: string;
 }
 
+declare const NotifyProvider: ({ children, value }: NotifyProviderType) => React$1.JSX.Element;
+
 declare const useNotification: () => {
-    toast: any;
+    toast: ToastProps[] | undefined;
     addToast: (obj: ToastProps) => {
-        toast: any;
+        toast: undefined;
         addToast: /*elided*/ any;
         deleteToast: (e: any) => void;
+        id: string;
     } | undefined;
     deleteToast: (e: any) => void;
+    id: string;
 };
 
-declare const notifyContext: React.Context<never[]>;
-declare const NotifyProvider: ({ children, value, }: {
-    children: React.ReactNode;
-    value: any;
-}) => React.JSX.Element;
+declare const Toast: () => React$1.JSX.Element;
 
-declare const Toast: () => React.JSX.Element;
-
-export { type NotifyContextType, NotifyProvider, type SvgType, Toast, type ToastProps, type ToastStyle, useNotification as default, notifyContext };
+export { type NotifyContextType, NotifyProvider, type NotifyProviderType, type Position, type SvgType, Toast, type ToastContextType, type ToastIconLinkType, type ToastProps, type ToastStyle, type ToastStyleDataType, useNotification };

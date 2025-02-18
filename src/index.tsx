@@ -1,5 +1,7 @@
-import { useNotification } from "./hooks/UseNotification";
-export * from "./context";
-export * from "./toast";
+import { NotifyProvider } from "./context";
+import { useNotification } from "./hooks/useNotification";
+import { Toast } from "./Toast";
+
 export * from "./types";
-export default useNotification;
+
+export { NotifyProvider, Toast, useNotification };

@@ -1,6 +1,7 @@
-import { themeStyle } from "../theme";
+import { spacings, themeStyle } from "../theme";
+import { ToastIconLinkType, ToastStyleDataType } from "../types";
 
-const toastIconLink = {
+const toastIconLink: ToastIconLinkType = {
   info: "M12 0a12 12 0 1012 12A12.013 12.013 0 0012 0zm.25 5a1.5 1.5 0 11-1.5 1.5 1.5 1.5 0 011.5-1.5zm2.25 13.5h-4a1 1 0 010-2h.75a.25.25 0 00.25-.25v-4.5a.25.25 0 00-.25-.25h-.75a1 1 0 010-2h1a2 2 0 012 2v4.75a.25.25 0 00.25.25h.75a1 1 0 110 2z",
 
   error:
@@ -16,44 +17,36 @@ const toastIconLink = {
 
 const toastStyleData = {
   topRight: {
-    top: "20px",
+    top: spacings.primary[4],
     right: "2vw",
   },
   topLeft: {
-    top: "20px",
+    top: spacings.primary[4],
     left: "2vw",
   },
   topCenter: {
     left: "50%",
     transform: "translate(-50%)",
-    top: "20px",
+    top: spacings.primary[4],
   },
   bottomRight: {
-    bottom: "20px",
+    bottom: spacings.primary[4],
     right: "2vw",
   },
   bottomLeft: {
-    bottom: "20px",
+    bottom: spacings.primary[4],
     left: "2vw",
   },
   bottomCenter: {
-    bottom: "20px",
+    bottom: spacings.primary[4],
     transform: "translate(-50%)",
     left: "50%",
   },
 };
 
-export const setStateTypes = (type: string): string => {
-  return type === "info"
-    ? toastIconLink.info
-    : type === "success"
-    ? toastIconLink.success
-    : type === "error"
-    ? toastIconLink.error
-    : type === "warning"
-    ? toastIconLink.warning
-    : toastIconLink.default;
-};
+export const setStateTypes = (
+  type: "info" | "error" | "success" | "warning" | "default"
+) => toastIconLink[type] || toastIconLink.default;
 
 export const setStateStyle = (position: string, item?: number) => {
   const pos =
@@ -145,13 +138,13 @@ export const setStateTransition = (
   }
 };
 
-const setSpace = (position: string, pos: any, item?: number) => {
+const setSpace = (position: string, pos: ToastStyleDataType, item?: number) => {
   if (item === 0 && position.includes("top")) {
-    pos.top = "20px";
+    pos.top = spacings.primary[4];
     return pos;
   }
   if (item === 0 && position.includes("bottom")) {
-    pos.bottom = "20px";
+    pos.bottom = spacings.primary[4];
     return pos;
   }
   if (position.includes("top")) {

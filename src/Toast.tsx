@@ -8,28 +8,31 @@ import { notifyContext } from "./context";
 import { themeStyle } from "./theme";
 import { GlobalStyle } from "./globalStyle";
 
-export const Toast = () => {
+import { ToastContextType, ToastProps } from "./types";
 
-  const {toast, deleteToast} = useContext<any>(notifyContext)
+export const Toast = () => {
+  const { toast, deleteToast } = useContext<ToastContextType>(notifyContext);
 
   return (
-      <ThemeProvider theme={themeStyle}>
-        <GlobalStyle />
-        {toast.map((el: any) => (
-          <Toastify
-            deleteToast={deleteToast}
-            position={el.position}
-            title={el.title}
-            text={el.text}
-            type={el.type}
-            theme={el.theme}
-            transition={el.transition}
-            autoClose={el.autoClose}
-            id={el.id}
-            key={el.id}
-            item={el.item}
-          />
-        ))}
-      </ThemeProvider>
+    <ThemeProvider theme={themeStyle}>
+      <GlobalStyle />
+      {typeof toast !== "undefined"
+        ? toast.map((el: ToastProps) => (
+            <Toastify
+              deleteToast={deleteToast}
+              position={el.position}
+              title={el.title}
+              text={el.text}
+              type={el.type}
+              theme={el.theme}
+              transition={el.transition}
+              autoClose={el.autoClose}
+              id={el.id}
+              key={el.id}
+              item={el.item}
+            />
+          ))
+        : undefined}
+    </ThemeProvider>
   );
 };
