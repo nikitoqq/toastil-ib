@@ -1,23 +1,26 @@
-import React, { useContext } from "react";
-import { ThemeProvider } from "styled-components";
+import React, { useContext } from 'react';
+import { ThemeProvider } from 'styled-components';
 
-import { Toastify } from "./components/Toastify";
+import Toastify from './components/Toastify';
 
-import { notifyContext } from "./context";
+import { themeStyle } from './theme';
+import GlobalStyle from './globalStyle';
 
-import { themeStyle } from "./theme";
-import { GlobalStyle } from "./globalStyle";
+import { ToastContextType, ToastProps } from './types';
 
-import { ToastContextType, ToastProps } from "./types";
-
-export const Toast = () => {
+export default function Toast({
+  notifyContext,
+}: {
+  notifyContext: React.Context<ToastContextType>;
+}) {
   const { toast, deleteToast } = useContext<ToastContextType>(notifyContext);
 
   return (
     <ThemeProvider theme={themeStyle}>
       <GlobalStyle />
-      {typeof toast !== "undefined"
+      {typeof toast !== 'undefined'
         ? toast.map((el: ToastProps) => (
+            // eslint-disable-next-line react/jsx-indent
             <Toastify
               deleteToast={deleteToast}
               position={el.position}
@@ -31,8 +34,9 @@ export const Toast = () => {
               key={el.id}
               item={el.item}
             />
+            // eslint-disable-next-line @typescript-eslint/indent
           ))
         : undefined}
     </ThemeProvider>
   );
-};
+}

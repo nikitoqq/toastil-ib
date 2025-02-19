@@ -5,20 +5,26 @@ export interface SvgType {
 }
 
 export type Position =
-  | "top-right"
-  | "top-left"
-  | "top-center"
-  | "bottom-right"
-  | "bottom-left"
-  | "bottom-center";
+  | 'top-right'
+  | 'top-left'
+  | 'top-center'
+  | 'bottom-right'
+  | 'bottom-left'
+  | 'bottom-center';
+
+export type Type = 'info' | 'success' | 'warning' | 'error' | 'default';
+
+export type Theme = 'light' | 'dark' | 'colored';
+
+export type Transition = 'bounce' | 'slide' | 'zoom' | 'flip';
 
 export interface ToastProps {
   title: string;
   text: string;
   position: Position;
-  type: "info" | "success" | "warning" | "error" | "default";
-  theme: "light" | "dark" | "colored";
-  transition: "bounce" | "slide" | "zoom" | "flip";
+  type: Type;
+  theme: Theme;
+  transition: Transition;
   autoClose: string;
   deleteToast?: any;
   id?: string;
@@ -32,7 +38,6 @@ export interface NotifyContextType {
 }
 
 export interface ToastStyle {
-  //Хз, как по другому, иначе не работает
   animation?: string;
   autoClose?: string;
   bottom?: string;

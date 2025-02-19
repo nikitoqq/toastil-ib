@@ -1,12 +1,13 @@
-import React, { useState } from "react";
+import React, { useState } from 'react';
+// eslint-disable-next-line object-curly-newline
 import {
   setStateTypes,
   setStateStyle,
   setStateTheme,
   setStateTransition,
-} from "../../utils/utils";
+} from '../../utils/utils';
 
-import { SvgIcon } from "../SvgIcon";
+import SvgIcon from '../SvgIcon';
 
 import {
   Toast,
@@ -18,14 +19,15 @@ import {
   CancelColumn,
   Tittle,
   HiddenLoader,
-} from "./styled";
+} from './styled';
 
-import { ToastProps, ToastStyle } from "../../types";
+import { ToastProps, ToastStyle } from '../../types';
 
+// eslint-disable-next-line operator-linebreak
 const CANCEL_SVG_PATH =
-  "M7.71 8.23l3.75 3.75-1.48 1.48-3.75-3.75-3.75 3.75L1 11.98l3.75-3.75L1 4.48 2.48 3l3.75 3.75L9.98 3l1.48 1.48-3.75 3.75z";
+  'M7.71 8.23l3.753.75-1.48 1.48-3.75-3.75-3.75 3.75L1 11.98l3.75-3.75L1 4.48 2.48 3l3.75 3.75L9.98 3l1.48 1.48-3.75 3.75z';
 
-export const Toastify = ({
+export default function Toastify({
   title,
   text,
   position,
@@ -36,23 +38,22 @@ export const Toastify = ({
   deleteToast,
   id,
   item,
-}: ToastProps) => {
+}: ToastProps) {
   const [toastStyle, setToast] = useState<ToastStyle>({
-    text: text,
-    title: title,
+    text,
+    title,
     src: setStateTypes(type),
     ...setStateTheme(theme, type),
     ...setStateStyle(position, item),
-    autoClose: autoClose,
+    autoClose,
     animation: setStateTransition(transition, position),
   });
 
   const funcDelete = (e: any) => {
     setToast({
       ...toastStyle,
-      animation: setStateTransition(transition, position, "-reverse"),
+      animation: setStateTransition(transition, position, '-reverse'),
     });
-    console.log(toastStyle.animation);
     setTimeout(() => {
       deleteToast(e);
     }, 500);
@@ -87,4 +88,4 @@ export const Toastify = ({
       <HiddenLoader style={{ background: toastStyle.barColor }} />
     </Toast>
   );
-};
+}

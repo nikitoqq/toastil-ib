@@ -1,16 +1,19 @@
-import React, { createContext } from "react";
+import React, { createContext } from 'react';
 
-import { Toast } from "../Toast";
+import Toast from '../Toast';
 
-import { NotifyProviderType, ToastContextType } from "../types";
+import { NotifyProviderType, ToastContextType } from '../types';
 
 export const notifyContext = createContext<ToastContextType>({});
 
-export const NotifyProvider = ({ children, value }: NotifyProviderType) => {
+export default function NotifyProvider({
+  children,
+  value,
+}: NotifyProviderType) {
   return (
     <notifyContext.Provider value={value}>
-      <Toast />
+      <Toast notifyContext={notifyContext} />
       {children}
     </notifyContext.Provider>
   );
-};
+}

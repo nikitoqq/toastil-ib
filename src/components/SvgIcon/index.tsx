@@ -1,10 +1,10 @@
-import React from "react";
+import React from 'react';
 
-import { SvgType } from "../../types";
+import { SvgType } from '../../types';
 
-import { ImageType } from "./styled";
+import ImageType from './styled';
 
-export const SvgIcon = ({ path, color, size = 25 }: SvgType) => {
+function SvgIcon({ path, color, size = 25 }: SvgType) {
   return (
     <ImageType
       viewBox="0 0 25 25"
@@ -13,7 +13,9 @@ export const SvgIcon = ({ path, color, size = 25 }: SvgType) => {
       height={`${size}px`}
       fill="currentColor"
     >
-      <path d={path}></path>
+      <path d={path} />
     </ImageType>
   );
-};
+}
+
+export default SvgIcon;

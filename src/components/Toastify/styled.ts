@@ -1,5 +1,5 @@
-import styled from "styled-components";
-import { animation, animationLoader } from "./animation";
+import styled from 'styled-components';
+import { animation, animationLoader } from './animation';
 
 export const Toast = styled(animation)`
   display: flex;
@@ -12,7 +12,7 @@ export const Toast = styled(animation)`
   border-radius: 5px;
 `;
 
-export const Row = styled("div")`
+export const Row = styled('div')`
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -32,7 +32,7 @@ export const Loader = styled(animationLoader)`
   border-bottom-right-radius: 5px;
 `;
 
-export const HiddenLoader = styled("div")`
+export const HiddenLoader = styled('div')`
   display: flex;
   width: 100%;
   height: 5px;
@@ -40,27 +40,27 @@ export const HiddenLoader = styled("div")`
   border-bottom-right-radius: 5px;
 `;
 
-export const Column = styled("div")`
+export const Column = styled('div')`
   display: flex;
   align-items: center;
 `;
 
-export const CancelColumn = styled("div")`
+export const CancelColumn = styled('div')`
   display: flex;
   align-items: start;
   height: 20px;
 `;
 
-export const Message = styled("h2")`
-  font-family: "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS", sans-serif;
+export const Message = styled('h2')`
+  font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
   font-weight: 400;
   font-size: 17px;
   color: #757575;
   margin-bottom: 7px;
 `;
 
-export const Tittle = styled("h1")`
-  font-family: "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS", sans-serif;
+export const Tittle = styled('h1')`
+  font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
   font-weight: 400;
   font-size: 22px;
   margin-left: 10px;
@@ -68,13 +68,13 @@ export const Tittle = styled("h1")`
   margin: 5px 0px 10px 10px;
 `;
 
-export const Cancel = styled("button")`
+export const Cancel = styled('button')`
   border: 0px;
   width: 25px;
   height: 25px;
 `;
 
-export const Image = styled("img")`
+export const Image = styled('img')`
   width: 20px;
   height: 20px;
 `;

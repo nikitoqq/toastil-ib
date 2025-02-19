@@ -1,37 +1,35 @@
-import { useState } from "react";
-import { ToastProps } from "../types";
+import { useState } from 'react';
+import { ToastProps } from '../types';
 
-export const useNotification = () => {
-  const [id, setId] = useState<string>("0");
+export default function useNotification() {
+  const [id, setId] = useState<string>('0');
   const [toast, setToast] = useState<ToastProps[]>();
 
-  var deleteToast = (e: any) => {
-    setToast((prevState: ToastProps[] | undefined) =>
-      prevState
-        ? prevState.filter((el: any) => e.target.id !== el.id)
-        : undefined
-    );
+  const deleteToast = (e: any) => {
+    setToast(toast!.filter((el: any) => e.target.id !== el.id));
   };
 
   const addToast = (obj: ToastProps) => {
     setId(`${+id + 1}`);
-    if (typeof toast === "undefined") {
-      [obj.item, obj.id] = [0, id];
-
-      setToast([obj]);
-      return { toast, addToast, deleteToast, id };
+    if (typeof toast === 'undefined') {
+      setToast([{ ...obj, item: 0, id }]);
+      return { toast, addToast, deleteToast };
     }
 
-    const itemPos = toast.reduce((acc: number, cur: any) => {
-      return cur.position === obj.position ? (acc += 1) : acc;
-    }, 0);
-
-    [obj.id, obj.item] = [id, itemPos];
-
-    setToast((prevState: ToastProps[] | undefined) =>
-      prevState ? [...prevState, obj] : undefined
+    const item: number = toast.reduce(
+      (acc: number, cur: ToastProps): number => {
+        if (cur.position === obj.position) {
+          // eslint-disable-next-line no-param-reassign
+          acc += 1;
+        }
+        return acc;
+      },
+      0,
     );
+
+    setToast([...toast, { ...obj, id, item }]);
+    return null;
   };
 
-  return { toast, addToast, deleteToast, id };
-};
+  return { toast, addToast, deleteToast };
+}

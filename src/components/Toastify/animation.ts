@@ -1,6 +1,6 @@
-import styled from "styled-components";
+import styled from 'styled-components';
 
-export const animationLoader = styled("div")`
+export const animationLoader = styled('div')`
   @keyframes load {
     0% {
       width: 100%;
@@ -11,7 +11,7 @@ export const animationLoader = styled("div")`
   }
 `;
 
-export const animation = styled("div")`
+export const animation = styled('div')`
   @keyframes slide-top-left {
     from {
       transform: translateX(-50vh);
