@@ -8,13 +8,8 @@
     "url": "https://github.com/nikitoqq/toast-lib"
   },
   "scripts": {
-    "build": "tsup"
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "npx eslint . --ext .js,.jsx,.ts,.tsx",
-      "pre-push": ""
-    }
+    "build": "tsup",
+    "prepare": "husky"
   },
   "keywords": [
     "test"

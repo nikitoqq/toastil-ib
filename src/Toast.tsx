@@ -20,7 +20,6 @@ export default function Toast({
       <GlobalStyle />
       {typeof toast !== 'undefined'
         ? toast.map((el: ToastProps) => (
-            // eslint-disable-next-line react/jsx-indent
             <Toastify
               deleteToast={deleteToast}
               position={el.position}
