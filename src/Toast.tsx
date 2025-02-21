@@ -22,7 +22,7 @@ export default function Toast({
         ? toast.map((el: ToastProps) => (
             // eslint-disable-next-line react/jsx-indent
             <Toastify
-              deleteToast={deleteToast}
+              deleteToast={deleteToast!}
               position={el.position}
               title={el.title}
               text={el.text}

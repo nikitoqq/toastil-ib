@@ -1,5 +1,5 @@
+/* eslint-disable @typescript-eslint/indent */
 import React, { useState } from 'react';
-// eslint-disable-next-line object-curly-newline
 import {
   setStateTypes,
   setStateStyle,
@@ -49,13 +49,18 @@ export default function Toastify({
     animation: setStateTransition(transition, position),
   });
 
-  const funcDelete = (e: any) => {
+  const funcDelete = (
+    e:
+      | React.BaseSyntheticEvent<React.SetStateAction<ToastProps>>
+      | React.AnimationEvent<HTMLDivElement>
+      | React.MouseEvent<HTMLButtonElement, MouseEvent>,
+  ) => {
     setToast({
       ...toastStyle,
       animation: setStateTransition(transition, position, '-reverse'),
     });
     setTimeout(() => {
-      deleteToast(e);
+      deleteToast(e.target);
     }, 500);
   };
 
@@ -67,7 +72,7 @@ export default function Toastify({
         </Column>
         <CancelColumn>
           <Cancel
-            onClick={funcDelete}
+            onClick={(e) => funcDelete(e)}
             style={{ backgroundColor: toastStyle.backgroundColor }}
           >
             <SvgIcon color="gray" size={25} path={CANCEL_SVG_PATH} />
@@ -82,7 +87,7 @@ export default function Toastify({
       </Row>
       <Loader
         id={id}
-        onAnimationEnd={funcDelete}
+        onAnimationEnd={(e) => funcDelete(e)}
         property={toastStyle.autoClose}
       />
       <HiddenLoader style={{ background: toastStyle.barColor }} />

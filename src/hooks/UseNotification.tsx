@@ -1,19 +1,28 @@
-import { useState } from 'react';
+/* eslint-disable @typescript-eslint/indent */
+import React, { useState } from 'react';
+
+import { v4 as uuidv4, UUIDTypes } from 'uuid';
+
 import { ToastProps } from '../types';
 
 export default function useNotification() {
-  const [id, setId] = useState<string>('0');
   const [toast, setToast] = useState<ToastProps[]>();
 
-  const deleteToast = (e: any) => {
-    setToast(toast!.filter((el: any) => e.target.id !== el.id));
+  const id: UUIDTypes = uuidv4();
+
+  const deleteToast = (
+    e:
+      | React.BaseSyntheticEvent<HTMLButtonElement>
+      | React.BaseSyntheticEvent<HTMLDivElement>,
+  ) => {
+    setToast((prev) => prev!.filter((el: ToastProps) => e.target.id !== el.id));
+    return { toast };
   };
 
   const addToast = (obj: ToastProps) => {
-    setId(`${+id + 1}`);
     if (typeof toast === 'undefined') {
       setToast([{ ...obj, item: 0, id }]);
-      return { toast, addToast, deleteToast };
+      return { toast };
     }
 
     const item: number = toast.reduce(
@@ -27,8 +36,8 @@ export default function useNotification() {
       0,
     );
 
-    setToast([...toast, { ...obj, id, item }]);
-    return null;
+    setToast((prev) => [...prev!, { ...obj, id, item }]);
+    return toast;
   };
 
   return { toast, addToast, deleteToast };

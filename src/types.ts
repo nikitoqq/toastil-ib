@@ -26,15 +26,9 @@ export interface ToastProps {
   theme: Theme;
   transition: Transition;
   autoClose: string;
-  deleteToast?: any;
+  deleteToast: React.Dispatch<React.SetStateAction<ToastProps>>;
   id?: string;
   item?: number;
-}
-
-export interface NotifyContextType {
-  toast?: object[];
-  addToast?: any;
-  deleteToast?: any;
 }
 
 export interface ToastStyle {
