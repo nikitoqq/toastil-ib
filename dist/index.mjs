@@ -732,19 +732,20 @@ function Toastify({
     autoClose,
     animation: setStateTransition(transition, position)
   });
-  const funcDelete = (e) => {
+  const funcDelete = (target) => {
     setToast({
       ...toastStyle,
       animation: setStateTransition(transition, position, "-reverse")
     });
     setTimeout(() => {
-      deleteToast(e.target);
+      deleteToast(target.id);
     }, 500);
   };
   return /* @__PURE__ */ React2.createElement(Toast, { style: toastStyle }, /* @__PURE__ */ React2.createElement(Row, null, /* @__PURE__ */ React2.createElement(Column, null, /* @__PURE__ */ React2.createElement(Tittle, { style: { color: toastStyle.h1 } }, title)), /* @__PURE__ */ React2.createElement(CancelColumn, null, /* @__PURE__ */ React2.createElement(
     Cancel,
     {
-      onClick: (e) => funcDelete(e),
+      onClick: (e) => funcDelete(e.target),
+      id,
       style: { backgroundColor: toastStyle.backgroundColor }
     },
     /* @__PURE__ */ React2.createElement(SvgIcon_default, { color: "gray", size: 25, path: CANCEL_SVG_PATH })
@@ -752,7 +753,7 @@ function Toastify({
     Loader,
     {
       id,
-      onAnimationEnd: (e) => funcDelete(e),
+      onAnimationEnd: (e) => funcDelete(e.target),
       property: toastStyle.autoClose
     }
   ), /* @__PURE__ */ React2.createElement(HiddenLoader, { style: { background: toastStyle.barColor } }));
@@ -792,7 +793,13 @@ function Toast2({
 }
 
 // src/context/index.tsx
-var notifyContext = createContext({});
+var notifyContext = createContext({
+  toast: [],
+  addToast: () => {
+  },
+  deleteToast: () => {
+  }
+});
 function NotifyProvider({
   children,
   value
@@ -802,26 +809,24 @@ function NotifyProvider({
 function useNotification() {
   const [toast, setToast] = useState();
   const id = v4();
-  const deleteToast = (e) => {
-    setToast((prev) => prev.filter((el) => e.target.id !== el.id));
-    return { toast };
+  const deleteToast = (targetId) => {
+    setToast((prev) => prev.filter((el) => targetId !== el.id));
   };
   const addToast = (obj) => {
     if (typeof toast === "undefined") {
       setToast([{ ...obj, item: 0, id }]);
-      return { toast };
+    } else {
+      const item = toast.reduce(
+        (acc, cur) => {
+          if (cur.position === obj.position) {
+            acc += 1;
+          }
+          return acc;
+        },
+        0
+      );
+      setToast((prev) => [...prev, { ...obj, id, item }]);
     }
-    const item = toast.reduce(
-      (acc, cur) => {
-        if (cur.position === obj.position) {
-          acc += 1;
-        }
-        return acc;
-      },
-      0
-    );
-    setToast((prev) => [...prev, { ...obj, id, item }]);
-    return toast;
   };
   return { toast, addToast, deleteToast };
 }

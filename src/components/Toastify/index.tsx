@@ -49,18 +49,13 @@ export default function Toastify({
     animation: setStateTransition(transition, position),
   });
 
-  const funcDelete = (
-    e:
-      | React.BaseSyntheticEvent<React.SetStateAction<ToastProps>>
-      | React.AnimationEvent<HTMLDivElement>
-      | React.MouseEvent<HTMLButtonElement, MouseEvent>,
-  ) => {
+  const funcDelete = (target: HTMLElement) => {
     setToast({
       ...toastStyle,
       animation: setStateTransition(transition, position, '-reverse'),
     });
     setTimeout(() => {
-      deleteToast(e.target);
+      deleteToast!(target.id);
     }, 500);
   };
 
@@ -72,7 +67,8 @@ export default function Toastify({
         </Column>
         <CancelColumn>
           <Cancel
-            onClick={(e) => funcDelete(e)}
+            onClick={(e) => funcDelete(e.target as HTMLElement)}
+            id={id}
             style={{ backgroundColor: toastStyle.backgroundColor }}
           >
             <SvgIcon color="gray" size={25} path={CANCEL_SVG_PATH} />
@@ -87,7 +83,7 @@ export default function Toastify({
       </Row>
       <Loader
         id={id}
-        onAnimationEnd={(e) => funcDelete(e)}
+        onAnimationEnd={(e) => funcDelete(e.target as HTMLElement)}
         property={toastStyle.autoClose}
       />
       <HiddenLoader style={{ background: toastStyle.barColor }} />

@@ -17,7 +17,7 @@ interface ToastProps {
     theme: Theme;
     transition: Transition;
     autoClose: string;
-    deleteToast: React.Dispatch<React.SetStateAction<ToastProps>>;
+    deleteToast?: (targetId: string) => void;
     id?: string;
     item?: number;
 }
@@ -48,8 +48,8 @@ interface ToastStyleDataType {
 }
 interface ToastContextType {
     toast?: ToastProps[];
-    addToast?: React.Dispatch<React.SetStateAction<ToastProps>>;
-    deleteToast?: React.Dispatch<React.SetStateAction<ToastProps>>;
+    addToast: (obj: ToastProps) => void;
+    deleteToast: (targetId: string) => void;
 }
 interface NotifyProviderType {
     children: React.ReactNode;
@@ -65,15 +65,7 @@ interface ToastIconLinkType {
 
 declare function NotifyProvider({ children, value, }: NotifyProviderType): React$1.JSX.Element;
 
-declare function useNotification(): {
-    toast: ToastProps[] | undefined;
-    addToast: (obj: ToastProps) => ToastProps[] | {
-        toast: undefined;
-    };
-    deleteToast: (e: React$1.BaseSyntheticEvent<HTMLButtonElement> | React$1.BaseSyntheticEvent<HTMLDivElement>) => {
-        toast: ToastProps[] | undefined;
-    };
-};
+declare function useNotification(): ToastContextType;
 
 declare function Toast({ notifyContext, }: {
     notifyContext: React$1.Context<ToastContextType>;

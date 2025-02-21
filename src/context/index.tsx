@@ -4,7 +4,11 @@ import Toast from '../Toast';
 
 import { NotifyProviderType, ToastContextType } from '../types';
 
-export const notifyContext = createContext<ToastContextType>({});
+export const notifyContext = createContext<ToastContextType>({
+  toast: [],
+  addToast: () => {},
+  deleteToast: () => {},
+});
 
 export default function NotifyProvider({
   children,

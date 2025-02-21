@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/indent */
 export interface SvgType {
   path: string;
   color?: string;
@@ -26,7 +27,7 @@ export interface ToastProps {
   theme: Theme;
   transition: Transition;
   autoClose: string;
-  deleteToast: React.Dispatch<React.SetStateAction<ToastProps>>;
+  deleteToast?: (targetId: string) => void;
   id?: string;
   item?: number;
 }
@@ -60,8 +61,8 @@ export interface ToastStyleDataType {
 
 export interface ToastContextType {
   toast?: ToastProps[];
-  addToast?: React.Dispatch<React.SetStateAction<ToastProps>>;
-  deleteToast?: React.Dispatch<React.SetStateAction<ToastProps>>;
+  addToast: (obj: ToastProps) => void;
+  deleteToast: (targetId: string) => void;
 }
 
 export interface NotifyProviderType {
