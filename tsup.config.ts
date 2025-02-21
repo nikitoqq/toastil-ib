@@ -1,12 +1,12 @@
-import { defineConfig } from "tsup";
+import { defineConfig } from 'tsup';
 
 export default defineConfig({
-  format: ["cjs", "esm"],
-  entry: ["./src/index.tsx"],
-  external: ["react", "react-dom"],
+  format: ['cjs', 'esm'],
+  entry: ['./src/index.tsx'],
+  external: ['react', 'react-dom'],
   dts: true,
   shims: true,
   skipNodeModulesBundle: true,
   clean: true,
-  treeshake: true
+  treeshake: true,
 });
