@@ -1,13 +1,10 @@
 /* eslint-disable @typescript-eslint/indent */
 import React, { useState } from 'react';
-import {
-  setStateTypes,
-  setStateStyle,
-  setStateTheme,
-  setStateTransition,
-} from '../../utils/utils';
 
 import SvgIcon from '../SvgIcon';
+
+import { setTheme, setTransition } from '../../utils/utils';
+import { CANCEL_SVG_PATH, TOAST_ICON_PATH } from '../../constants';
 
 import {
   Toast,
@@ -21,11 +18,7 @@ import {
   HiddenLoader,
 } from './styled';
 
-import { ToastProps, ToastStyle } from '../../types';
-
-// eslint-disable-next-line operator-linebreak
-const CANCEL_SVG_PATH =
-  'M7.71 8.23l3.753.75-1.48 1.48-3.75-3.75-3.75 3.75L1 11.98l3.75-3.75L1 4.48 2.48 3l3.75 3.75L9.98 3l1.48 1.48-3.75 3.75z';
+import { ToastProps, ToastSetting } from '../../types';
 
 export default function Toastify({
   title,
@@ -37,22 +30,21 @@ export default function Toastify({
   autoClose,
   deleteToast,
   id,
-  item,
 }: ToastProps) {
-  const [toastStyle, setToast] = useState<ToastStyle>({
+  const [toastSetting, setToastSetting] = useState<ToastSetting>({
     text,
     title,
-    src: setStateTypes(type),
-    ...setStateTheme(theme, type),
-    ...setStateStyle(position, item),
+    type: TOAST_ICON_PATH[type],
+    ...setTheme(theme, type),
+    margin: '10px 0px',
     autoClose,
-    animation: setStateTransition(transition, position),
+    animation: setTransition(transition, position),
   });
 
   const funcDelete = (target: HTMLElement) => {
-    setToast({
-      ...toastStyle,
-      animation: setStateTransition(transition, position, '-reverse'),
+    setToastSetting({
+      ...toastSetting,
+      animation: setTransition(transition, position, '-reverse'),
     });
     setTimeout(() => {
       deleteToast!(target.id);
@@ -60,33 +52,33 @@ export default function Toastify({
   };
 
   return (
-    <Toast style={toastStyle}>
+    <Toast style={toastSetting}>
       <Row>
         <Column>
-          <Tittle style={{ color: toastStyle.h1 }}>{title}</Tittle>
+          <Tittle property={toastSetting.h1}>{title}</Tittle>
         </Column>
         <CancelColumn>
           <Cancel
             onClick={(e) => funcDelete(e.target as HTMLElement)}
-            id={id}
-            style={{ backgroundColor: toastStyle.backgroundColor }}
+            property={toastSetting.backgroundColor}
           >
-            <SvgIcon color="gray" size={25} path={CANCEL_SVG_PATH} />
+            <SvgIcon id={id} color="gray" size={25} path={CANCEL_SVG_PATH} />
           </Cancel>
         </CancelColumn>
       </Row>
       <Row>
         <Column>
-          <SvgIcon color={toastStyle.iconColor} path={toastStyle.src} />
-          <Message style={{ color: toastStyle.h2 }}>{text}</Message>
+          <SvgIcon color={toastSetting.iconColor} path={toastSetting.type} />
+          <Message property={toastSetting.h2}>{text}</Message>
         </Column>
       </Row>
-      <Loader
-        id={id}
-        onAnimationEnd={(e) => funcDelete(e.target as HTMLElement)}
-        property={toastStyle.autoClose}
-      />
-      <HiddenLoader style={{ background: toastStyle.barColor }} />
+      <Loader property={toastSetting.barColor}>
+        <HiddenLoader
+          id={id}
+          onAnimationEnd={(e) => funcDelete(e.target as HTMLElement)}
+          property={toastSetting.autoClose}
+        />
+      </Loader>
     </Toast>
   );
 }

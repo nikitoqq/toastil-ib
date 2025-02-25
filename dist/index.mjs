@@ -1,4 +1,5 @@
 import React2, { createContext, useContext, useState } from 'react';
+import { createPortal } from 'react-dom';
 import styled3, { createGlobalStyle, ThemeProvider } from 'styled-components';
 import { v4 } from 'uuid';
 
@@ -122,70 +123,51 @@ var themeStyle = {
   }
 };
 
-// src/utils/utils.ts
-var toastIconLink = {
+// src/constants.ts
+var CANCEL_SVG_PATH = "M7.71 8.23l3.75 3.75-1.48 1.48-3.75-3.75-3.75 3.75L1 11.98l3.75-3.75L1 4.48 2.48 3l3.75 3.75L9.98 3l1.48 1.48-3.75 3.75z";
+var TOAST_ICON_PATH = {
   info: "M12 0a12 12 0 1012 12A12.013 12.013 0 0012 0zm.25 5a1.5 1.5 0 11-1.5 1.5 1.5 1.5 0 011.5-1.5zm2.25 13.5h-4a1 1 0 010-2h.75a.25.25 0 00.25-.25v-4.5a.25.25 0 00-.25-.25h-.75a1 1 0 010-2h1a2 2 0 012 2v4.75a.25.25 0 00.25.25h.75a1 1 0 110 2z",
   error: "M11.983 0a12.206 12.206 0 00-8.51 3.653A11.8 11.8 0 000 12.207 11.779 11.779 0 0011.8 24h.214A12.111 12.111 0 0024 11.791 11.766 11.766 0 0011.983 0zM10.5 16.542a1.476 1.476 0 011.449-1.53h.027a1.527 1.527 0 011.523 1.47 1.475 1.475 0 01-1.449 1.53h-.027a1.529 1.529 0 01-1.523-1.47zM11 12.5v-6a1 1 0 012 0v6a1 1 0 11-2 0z",
   success: "M12 0a12 12 0 1012 12A12.014 12.014 0 0012 0zm6.927 8.2l-6.845 9.289a1.011 1.011 0 01-1.43.188l-4.888-3.908a1 1 0 111.25-1.562l4.076 3.261 6.227-8.451a1 1 0 111.61 1.183z",
   warning: "M23.32 17.191L15.438 2.184C14.728.833 13.416 0 11.996 0c-1.42 0-2.733.833-3.443 2.184L.533 17.448a4.744 4.744 0 000 4.368C1.243 23.167 2.555 24 3.975 24h16.05C22.22 24 24 22.044 24 19.632c0-.904-.251-1.746-.68-2.44zm-9.622 1.46c0 1.033-.724 1.823-1.698 1.823s-1.698-.79-1.698-1.822v-.043c0-1.028.724-1.822 1.698-1.822s1.698.79 1.698 1.822v.043zm.039-12.285l-.84 8.06c-.057.581-.408.943-.897.943-.49 0-.84-.367-.896-.942l-.84-8.065c-.057-.624.25-1.095.779-1.095h1.91c.528.005.84.476.784 1.1z",
   default: ""
 };
-var toastStyleData = {
-  topRight: { top: spacings.primary[4], right: "2vw" },
-  topLeft: { top: spacings.primary[4], left: "2vw" },
-  topCenter: {
-    left: "50%",
-    transform: "translate(-50%)",
-    top: spacings.primary[4]
-  },
-  bottomRight: { bottom: spacings.primary[4], right: "2vw" },
-  bottomLeft: { bottom: spacings.primary[4], left: "2vw" },
-  bottomCenter: {
-    bottom: spacings.primary[4],
-    transform: "translate(-50%)",
-    left: "50%"
-  }
+var PORTAL_STYLE = "display: flex; flex-direction: column; position: fixed;";
+var PORTAL_CLASS = [
+  "top-left",
+  "top-center",
+  "top-right",
+  "bottom-left",
+  "bottom-center",
+  "bottom-right"
+];
+var TOAST_POSITION = {
+  "top-right": `top: ${spacings.primary[4]}; right: 2vw;`,
+  "top-left": `top: ${spacings.primary[4]}; left: 2vw;`,
+  "top-center": `left: 50%; transform: translate(-50%); top: ${spacings.primary[4]};`,
+  "bottom-right": `bottom: ${spacings.primary[4]}; right: 2vw;`,
+  "bottom-left": `bottom: ${spacings.primary[4]}; left: 2vw;`,
+  "bottom-center": `bottom: ${spacings.primary[4]}; transform: translate(-50%); left: 50%;`
 };
-var setStateTypes = (type) => (
-  // eslint-disable-next-line implicit-arrow-linebreak
-  toastIconLink[type] || toastIconLink.default
-);
-var setSpace = (position, pos, item) => {
-  if (item) {
-    if (position.includes("top")) {
-      return { ...pos, top: `${100 * item + 20}px` };
-    }
-    return { ...pos, bottom: `${100 * item + 20}px` };
-  }
-  return { ...pos };
-};
-var setStateStyle = (position, item) => {
-  switch (position) {
-    case "top-left":
-      return setSpace(position, toastStyleData.topLeft, item);
-    case "top-center":
-      return setSpace(position, toastStyleData.topCenter, item);
-    case "bottom-left":
-      return setSpace(position, toastStyleData.bottomLeft, item);
-    case "bottom-center":
-      return setSpace(position, toastStyleData.bottomCenter, item);
-    case "bottom-right":
-      return setSpace(position, toastStyleData.bottomRight, item);
-    default:
-      return setSpace(position, toastStyleData.topRight, item);
-  }
-};
-var setStateTheme = (theme, type) => {
+
+// src/utils/utils.ts
+var setTheme = (theme, type) => {
   const themes = themeStyle[theme];
-  return { h1: themes.h1, h2: themes.h2, ...themes[type] };
+  return { ...themes[type] };
 };
-var setStateTransition = (transition, position, revers) => {
+var setTransition = (transition, position, revers) => {
   const reversMode = typeof revers === "undefined" ? "" : revers;
   if (transition === "flip" || transition === "zoom") {
     return `0.5s ease alternate ${position.includes("center") ? `${transition}-center` : `${transition}`}${reversMode}`;
   }
   return `0.5s linear 0s alternate ${`${transition}-${position}`}${reversMode}`;
 };
+PORTAL_CLASS.forEach((el) => {
+  const createElement = document.createElement("div");
+  createElement.id = `portal-${el}`;
+  document.body.appendChild(createElement);
+  document.getElementById(`portal-${el}`).setAttribute("style", `${PORTAL_STYLE}${TOAST_POSITION[el]}`);
+});
 var styled_default = styled3("svg")`
   width: 23px;
   height: 23px;
@@ -193,10 +175,11 @@ var styled_default = styled3("svg")`
 `;
 
 // src/components/SvgIcon/index.tsx
-function SvgIcon({ path, color, size = 25 }) {
+function SvgIcon({ id, path, color, size = 25 }) {
   return /* @__PURE__ */ React2.createElement(
     styled_default,
     {
+      id,
       viewBox: "0 0 25 25",
       color,
       width: `${size}px`,
@@ -229,10 +212,10 @@ var animation = styled3("div")`
 
   @keyframes slide-top-center {
     0% {
-      transform: translate(-50%, -100vw);
+      transform: translateY(-100vw);
     }
     100% {
-      transform: translate(-50%, 0vw);
+      transform: translateY(0vw);
     }
   }
 
@@ -256,10 +239,10 @@ var animation = styled3("div")`
 
   @keyframes slide-bottom-center {
     0% {
-      transform: translate(-50%, 100vh);
+      transform: translateY(100vh);
     }
     100% {
-      transform: translate(-50%, 0vh);
+      transform: translateY(0vh);
     }
   }
 
@@ -292,19 +275,19 @@ var animation = styled3("div")`
 
   @keyframes bounce-top-center {
     0% {
-      transform: translate(-50%, -100vh);
+      transform: translateY(-100vh);
     }
     50% {
-      transform: translate(-50%, 5vh);
+      transform: translateY(5vh);
     }
     70% {
-      transform: translate(-50%, -3vh);
+      transform: translateY(-3vh);
     }
     90% {
-      transform: translate(-50%, 2vh);
+      transform: translateY(2vh);
     }
     100% {
-      transform: translate(-50%, 0vh);
+      transform: translateY(0vh);
     }
   }
 
@@ -346,19 +329,19 @@ var animation = styled3("div")`
 
   @keyframes bounce-bottom-center {
     0% {
-      transform: translate(-50%, 100vh);
+      transform: translateY(100vh);
     }
     50% {
-      transform: translate(-50%, -5vh);
+      transform: translateY(-5vh);
     }
     70% {
-      transform: translate(-50%, 3vh);
+      transform: translateY(3vh);
     }
     90% {
-      transform: translate(-50%, -2vh);
+      transform: translateY(-2vh);
     }
     100% {
-      transform: translate(-50%, 0vh);
+      transform: translateY(0vh);
     }
   }
 
@@ -391,10 +374,10 @@ var animation = styled3("div")`
 
   @keyframes zoom-center {
     from {
-      transform: scale(0) translateX(-50%);
+      transform: scale(0);
     }
     to {
-      transform: scale(1) translateX(-50%);
+      transform: scale(1);
     }
   }
 
@@ -415,15 +398,15 @@ var animation = styled3("div")`
 
   @keyframes flip-center {
     0% {
-      transform: perspective(400px) rotateX(-25deg) scale(1) translateX(-50%);
+      transform: perspective(400px) rotateX(-25deg) scale(1);
       animation-timing-function: ease-in;
     }
     50% {
-      transform: perspective(400px) translateX(-50%);
+      transform: perspective(400px);
       animation-timing-function: ease-out;
     }
     100% {
-      transform: perspective(400px) scale(1) translateX(-50%);
+      transform: perspective(400px) scale(1);
       animation-timing-function: ease-in;
     }
   }
@@ -439,10 +422,10 @@ var animation = styled3("div")`
 
   @keyframes slide-top-center-reverse {
     0% {
-      transform: translate(-50%, 0vw);
+      transform: translateY(0vw);
     }
     100% {
-      transform: translate(-50%, -100vw);
+      transform: translateY(-100vw);
     }
   }
 
@@ -466,10 +449,10 @@ var animation = styled3("div")`
 
   @keyframes slide-bottom-center-reverse {
     from {
-      transform: translate(-50%, 0vh);
+      transform: translateY(0vh);
     }
     to {
-      transform: translate(-50%, 100vh);
+      transform: translateY(100vh);
     }
   }
 
@@ -500,21 +483,21 @@ var animation = styled3("div")`
     }
   }
 
-  @keyframes bounce-top-center-reverse {
+  @keyframes bounce-bottom-center-reverse {
     0% {
-      transform: translate(-50%, 0vh);
+      transform: translateY(0vh);
     }
     50% {
-      transform: translate(-50%, 2vh);
+      transform: translateY(2vh);
     }
     70% {
-      transform: translate(-50%, -3vh);
+      transform: translateY(-3vh);
     }
     90% {
-      transform: translate(-50%, 5vh);
+      transform: translateY(5vh);
     }
     100% {
-      transform: translate(-50%, -100vh);
+      transform: translateY(-100vh);
     }
   }
 
@@ -554,21 +537,21 @@ var animation = styled3("div")`
     }
   }
 
-  @keyframes bounce-bottom-center-reverse {
+  @keyframes bounce-top-center-reverse {
     0% {
-      transform: translate(-50%, 0vh);
+      transform: translateY(0vh);
     }
     50% {
-      transform: translate(-50%, -2vh);
+      transform: translateY(-2vh);
     }
     70% {
-      transform: translate(-50%, 3vh);
+      transform: translateY(3vh);
     }
     90% {
-      transform: translate(-50%, -5vh);
+      transform: translateY(-5vh);
     }
     100% {
-      transform: translate(-50%, 100vh);
+      transform: translateY(100vh);
     }
   }
 
@@ -601,10 +584,10 @@ var animation = styled3("div")`
 
   @keyframes zoom-center-reverse {
     from {
-      transform: scale(1) translateX(-50%);
+      transform: scale(1);
     }
     to {
-      transform: scale(0) translateX(-50%);
+      transform: scale(0);
     }
   }
 
@@ -625,15 +608,15 @@ var animation = styled3("div")`
 
   @keyframes flip-center-reverse {
     0% {
-      transform: perspective(400px) scale(1) translateX(-50%);
+      transform: perspective(400px) scale(1);
       animation-timing-function: ease-in;
     }
     50% {
-      transform: perspective(400px) translateX(-50%);
+      transform: perspective(400px);
       animation-timing-function: ease-out;
     }
     100% {
-      transform: perspective(400px) rotateX(-25deg) scale(1) translateX(-50%);
+      transform: perspective(400px) rotateX(-25deg) scale(1);
       animation-timing-function: ease-in;
     }
   }
@@ -644,7 +627,6 @@ var Toast = styled3(animation)`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  position: fixed;
   width: 312px;
   height: 85px;
   box-shadow: 0px 1px 5px 0.5px rgb(236, 236, 236);
@@ -656,20 +638,18 @@ var Row = styled3("div")`
   align-items: center;
   padding: 0px 8px;
 `;
-var Loader = styled3(animationLoader)`
+var Loader = styled3("div")`
+  background-color: ${(props) => props.property};
   display: flex;
-  animation: ${(props) => props.property}ms linear 0s alternate load;
-  bottom: 0%;
-  background-color: black;
-  position: absolute;
-  opacity: 0.2;
   width: 100%;
   height: 5px;
   border-bottom-left-radius: 5px;
   border-bottom-right-radius: 5px;
 `;
-var HiddenLoader = styled3("div")`
-  display: flex;
+var HiddenLoader = styled3(animationLoader)`
+  animation: ${(props) => props.property}ms linear 0s alternate load;
+  background-color: black;
+  opacity: 0.2;
   width: 100%;
   height: 5px;
   border-bottom-left-radius: 5px;
@@ -685,6 +665,7 @@ var CancelColumn = styled3("div")`
   height: 20px;
 `;
 var Message = styled3("h2")`
+  color: ${(props) => props.property};
   font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
   font-weight: 400;
   font-size: 17px;
@@ -692,6 +673,7 @@ var Message = styled3("h2")`
   margin-bottom: 7px;
 `;
 var Tittle = styled3("h1")`
+  color: ${(props) => props.property};
   font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
   font-weight: 400;
   font-size: 22px;
@@ -700,6 +682,7 @@ var Tittle = styled3("h1")`
   margin: 5px 0px 10px 10px;
 `;
 var Cancel = styled3("button")`
+  background-color: ${(props) => props.property};
   border: 0px;
   width: 25px;
   height: 25px;
@@ -710,7 +693,6 @@ styled3("img")`
 `;
 
 // src/components/Toastify/index.tsx
-var CANCEL_SVG_PATH = "M7.71 8.23l3.753.75-1.48 1.48-3.75-3.75-3.75 3.75L1 11.98l3.75-3.75L1 4.48 2.48 3l3.75 3.75L9.98 3l1.48 1.48-3.75 3.75z";
 function Toastify({
   title,
   text,
@@ -720,43 +702,41 @@ function Toastify({
   transition,
   autoClose,
   deleteToast,
-  id,
-  item
+  id
 }) {
-  const [toastStyle, setToast] = useState({
+  const [toastSetting, setToastSetting] = useState({
     text,
     title,
-    src: setStateTypes(type),
-    ...setStateTheme(theme, type),
-    ...setStateStyle(position, item),
+    type: TOAST_ICON_PATH[type],
+    ...setTheme(theme, type),
+    margin: "10px 0px",
     autoClose,
-    animation: setStateTransition(transition, position)
+    animation: setTransition(transition, position)
   });
   const funcDelete = (target) => {
-    setToast({
-      ...toastStyle,
-      animation: setStateTransition(transition, position, "-reverse")
+    setToastSetting({
+      ...toastSetting,
+      animation: setTransition(transition, position, "-reverse")
     });
     setTimeout(() => {
       deleteToast(target.id);
     }, 500);
   };
-  return /* @__PURE__ */ React2.createElement(Toast, { style: toastStyle }, /* @__PURE__ */ React2.createElement(Row, null, /* @__PURE__ */ React2.createElement(Column, null, /* @__PURE__ */ React2.createElement(Tittle, { style: { color: toastStyle.h1 } }, title)), /* @__PURE__ */ React2.createElement(CancelColumn, null, /* @__PURE__ */ React2.createElement(
+  return /* @__PURE__ */ React2.createElement(Toast, { style: toastSetting }, /* @__PURE__ */ React2.createElement(Row, null, /* @__PURE__ */ React2.createElement(Column, null, /* @__PURE__ */ React2.createElement(Tittle, { property: toastSetting.h1 }, title)), /* @__PURE__ */ React2.createElement(CancelColumn, null, /* @__PURE__ */ React2.createElement(
     Cancel,
     {
       onClick: (e) => funcDelete(e.target),
-      id,
-      style: { backgroundColor: toastStyle.backgroundColor }
+      property: toastSetting.backgroundColor
     },
-    /* @__PURE__ */ React2.createElement(SvgIcon_default, { color: "gray", size: 25, path: CANCEL_SVG_PATH })
-  ))), /* @__PURE__ */ React2.createElement(Row, null, /* @__PURE__ */ React2.createElement(Column, null, /* @__PURE__ */ React2.createElement(SvgIcon_default, { color: toastStyle.iconColor, path: toastStyle.src }), /* @__PURE__ */ React2.createElement(Message, { style: { color: toastStyle.h2 } }, text))), /* @__PURE__ */ React2.createElement(
-    Loader,
+    /* @__PURE__ */ React2.createElement(SvgIcon_default, { id, color: "gray", size: 25, path: CANCEL_SVG_PATH })
+  ))), /* @__PURE__ */ React2.createElement(Row, null, /* @__PURE__ */ React2.createElement(Column, null, /* @__PURE__ */ React2.createElement(SvgIcon_default, { color: toastSetting.iconColor, path: toastSetting.type }), /* @__PURE__ */ React2.createElement(Message, { property: toastSetting.h2 }, text))), /* @__PURE__ */ React2.createElement(Loader, { property: toastSetting.barColor }, /* @__PURE__ */ React2.createElement(
+    HiddenLoader,
     {
       id,
       onAnimationEnd: (e) => funcDelete(e.target),
-      property: toastStyle.autoClose
+      property: toastSetting.autoClose
     }
-  ), /* @__PURE__ */ React2.createElement(HiddenLoader, { style: { background: toastStyle.barColor } }));
+  )));
 }
 var globalStyle_default = createGlobalStyle`
 * {
@@ -767,29 +747,30 @@ var globalStyle_default = createGlobalStyle`
 `;
 
 // src/Toast.tsx
-function Toast2({
-  notifyContext: notifyContext2
-}) {
+function Toast2({ notifyContext: notifyContext2 }) {
   const { toast, deleteToast } = useContext(notifyContext2);
-  return /* @__PURE__ */ React2.createElement(ThemeProvider, { theme: themeStyle }, /* @__PURE__ */ React2.createElement(globalStyle_default, null), typeof toast !== "undefined" ? toast.map((el) => (
-    // eslint-disable-next-line react/jsx-indent
-    /* @__PURE__ */ React2.createElement(
-      Toastify,
-      {
-        deleteToast,
-        position: el.position,
-        title: el.title,
-        text: el.text,
-        type: el.type,
-        theme: el.theme,
-        transition: el.transition,
-        autoClose: el.autoClose,
-        id: el.id,
-        key: el.id,
-        item: el.item
-      }
-    )
-  )) : void 0);
+  return /* @__PURE__ */ React2.createElement(ThemeProvider, { theme: themeStyle }, /* @__PURE__ */ React2.createElement(globalStyle_default, null), PORTAL_CLASS.map(
+    (pos) => toast ? createPortal(
+      toast.map(
+        (el) => pos === el.position ? /* @__PURE__ */ React2.createElement(
+          Toastify,
+          {
+            deleteToast,
+            position: el.position,
+            title: el.title,
+            text: el.text,
+            type: el.type,
+            theme: el.theme,
+            transition: el.transition,
+            autoClose: el.autoClose,
+            id: el.id,
+            key: el.id
+          }
+        ) : void 0
+      ),
+      document.getElementById(`portal-${pos}`)
+    ) : void 0
+  ));
 }
 
 // src/context/index.tsx
@@ -813,20 +794,7 @@ function useNotification() {
     setToast((prev) => prev.filter((el) => targetId !== el.id));
   };
   const addToast = (obj) => {
-    if (typeof toast === "undefined") {
-      setToast([{ ...obj, item: 0, id }]);
-    } else {
-      const item = toast.reduce(
-        (acc, cur) => {
-          if (cur.position === obj.position) {
-            acc += 1;
-          }
-          return acc;
-        },
-        0
-      );
-      setToast((prev) => [...prev, { ...obj, id, item }]);
-    }
+    setToast((prev) => prev ? [...prev, { ...obj, id }] : [{ ...obj, id }]);
   };
   return { toast, addToast, deleteToast };
 }

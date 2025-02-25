@@ -1,13 +1,10 @@
-/* eslint-disable function-paren-newline */
-/* eslint-disable implicit-arrow-linebreak */
-/* eslint-disable @typescript-eslint/indent */
 import { useState } from 'react';
 
 import { v4 as uuidv4, UUIDTypes } from 'uuid';
 
-import { ToastContextType, ToastProps } from '../types';
+import { NotifyContextType, ToastProps } from '../types';
 
-export default function useNotification(): ToastContextType {
+export default function useNotification(): NotifyContextType {
   const [toast, setToast] = useState<ToastProps[]>();
 
   const id: UUIDTypes = uuidv4();
@@ -17,22 +14,7 @@ export default function useNotification(): ToastContextType {
   };
 
   const addToast = (obj: ToastProps) => {
-    if (typeof toast === 'undefined') {
-      setToast([{ ...obj, item: 0, id }]);
-    } else {
-      const item: number = toast!.reduce(
-        (acc: number, cur: ToastProps): number => {
-          if (cur.position === obj.position) {
-            // eslint-disable-next-line no-param-reassign
-            acc += 1;
-          }
-          return acc;
-        },
-        0,
-      );
-
-      setToast((prev) => [...prev!, { ...obj, id, item }]);
-    }
+    setToast((prev) => (prev ? [...prev, { ...obj, id }] : [{ ...obj, id }]));
   };
 
   return { toast, addToast, deleteToast };

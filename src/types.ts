@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/indent */
 export interface SvgType {
+  id?: string;
   path: string;
   color?: string;
   size?: number;
@@ -20,38 +21,34 @@ export type Theme = 'light' | 'dark' | 'colored';
 export type Transition = 'bounce' | 'slide' | 'zoom' | 'flip';
 
 export interface ToastProps {
-  title: string;
+  title?: string;
   text: string;
   position: Position;
   type: Type;
   theme: Theme;
   transition: Transition;
-  autoClose: string;
+  autoClose: number;
   deleteToast?: (targetId: string) => void;
   id?: string;
-  item?: number;
 }
 
-export interface ToastStyle {
+export interface ToastSetting {
   animation?: string;
-  autoClose?: string;
-  bottom?: string;
-  top?: string;
-  left?: string;
-  right?: string;
+  autoClose: number;
+  margin: string;
   transform?: string;
   barColor?: string;
   backgroundColor?: string;
   h1?: string;
   h2?: string;
   iconColor?: string;
-  src: string;
-  text?: string;
+  type: string;
+  text: string;
   title?: string;
   id?: string;
 }
 
-export interface ToastStyleDataType {
+export interface ToastPositionType {
   top?: string;
   right?: string;
   left?: string;
@@ -59,7 +56,7 @@ export interface ToastStyleDataType {
   bottom?: string;
 }
 
-export interface ToastContextType {
+export interface NotifyContextType {
   toast?: ToastProps[];
   addToast: (obj: ToastProps) => void;
   deleteToast: (targetId: string) => void;
@@ -67,13 +64,9 @@ export interface ToastContextType {
 
 export interface NotifyProviderType {
   children: React.ReactNode;
-  value: ToastContextType;
+  value: NotifyContextType;
 }
 
-export interface ToastIconLinkType {
-  info: string;
-  error: string;
-  success: string;
-  warning: string;
-  default: string;
+export interface ToastContext {
+  notifyContext: React.Context<NotifyContextType>;
 }

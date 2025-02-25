@@ -2,9 +2,9 @@ import React, { createContext } from 'react';
 
 import Toast from '../Toast';
 
-import { NotifyProviderType, ToastContextType } from '../types';
+import { NotifyProviderType, NotifyContextType } from '../types';
 
-export const notifyContext = createContext<ToastContextType>({
+export const notifyContext = createContext<NotifyContextType>({
   toast: [],
   addToast: () => {},
   deleteToast: () => {},

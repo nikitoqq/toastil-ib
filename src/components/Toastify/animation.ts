@@ -23,10 +23,10 @@ export const animation = styled('div')`
 
   @keyframes slide-top-center {
     0% {
-      transform: translate(-50%, -100vw);
+      transform: translateY(-100vw);
     }
     100% {
-      transform: translate(-50%, 0vw);
+      transform: translateY(0vw);
     }
   }
 
@@ -50,10 +50,10 @@ export const animation = styled('div')`
 
   @keyframes slide-bottom-center {
     0% {
-      transform: translate(-50%, 100vh);
+      transform: translateY(100vh);
     }
     100% {
-      transform: translate(-50%, 0vh);
+      transform: translateY(0vh);
     }
   }
 
@@ -86,19 +86,19 @@ export const animation = styled('div')`
 
   @keyframes bounce-top-center {
     0% {
-      transform: translate(-50%, -100vh);
+      transform: translateY(-100vh);
     }
     50% {
-      transform: translate(-50%, 5vh);
+      transform: translateY(5vh);
     }
     70% {
-      transform: translate(-50%, -3vh);
+      transform: translateY(-3vh);
     }
     90% {
-      transform: translate(-50%, 2vh);
+      transform: translateY(2vh);
     }
     100% {
-      transform: translate(-50%, 0vh);
+      transform: translateY(0vh);
     }
   }
 
@@ -140,19 +140,19 @@ export const animation = styled('div')`
 
   @keyframes bounce-bottom-center {
     0% {
-      transform: translate(-50%, 100vh);
+      transform: translateY(100vh);
     }
     50% {
-      transform: translate(-50%, -5vh);
+      transform: translateY(-5vh);
     }
     70% {
-      transform: translate(-50%, 3vh);
+      transform: translateY(3vh);
     }
     90% {
-      transform: translate(-50%, -2vh);
+      transform: translateY(-2vh);
     }
     100% {
-      transform: translate(-50%, 0vh);
+      transform: translateY(0vh);
     }
   }
 
@@ -185,10 +185,10 @@ export const animation = styled('div')`
 
   @keyframes zoom-center {
     from {
-      transform: scale(0) translateX(-50%);
+      transform: scale(0);
     }
     to {
-      transform: scale(1) translateX(-50%);
+      transform: scale(1);
     }
   }
 
@@ -209,15 +209,15 @@ export const animation = styled('div')`
 
   @keyframes flip-center {
     0% {
-      transform: perspective(400px) rotateX(-25deg) scale(1) translateX(-50%);
+      transform: perspective(400px) rotateX(-25deg) scale(1);
       animation-timing-function: ease-in;
     }
     50% {
-      transform: perspective(400px) translateX(-50%);
+      transform: perspective(400px);
       animation-timing-function: ease-out;
     }
     100% {
-      transform: perspective(400px) scale(1) translateX(-50%);
+      transform: perspective(400px) scale(1);
       animation-timing-function: ease-in;
     }
   }
@@ -233,10 +233,10 @@ export const animation = styled('div')`
 
   @keyframes slide-top-center-reverse {
     0% {
-      transform: translate(-50%, 0vw);
+      transform: translateY(0vw);
     }
     100% {
-      transform: translate(-50%, -100vw);
+      transform: translateY(-100vw);
     }
   }
 
@@ -260,10 +260,10 @@ export const animation = styled('div')`
 
   @keyframes slide-bottom-center-reverse {
     from {
-      transform: translate(-50%, 0vh);
+      transform: translateY(0vh);
     }
     to {
-      transform: translate(-50%, 100vh);
+      transform: translateY(100vh);
     }
   }
 
@@ -294,21 +294,21 @@ export const animation = styled('div')`
     }
   }
 
-  @keyframes bounce-top-center-reverse {
+  @keyframes bounce-bottom-center-reverse {
     0% {
-      transform: translate(-50%, 0vh);
+      transform: translateY(0vh);
     }
     50% {
-      transform: translate(-50%, 2vh);
+      transform: translateY(2vh);
     }
     70% {
-      transform: translate(-50%, -3vh);
+      transform: translateY(-3vh);
     }
     90% {
-      transform: translate(-50%, 5vh);
+      transform: translateY(5vh);
     }
     100% {
-      transform: translate(-50%, -100vh);
+      transform: translateY(-100vh);
     }
   }
 
@@ -348,21 +348,21 @@ export const animation = styled('div')`
     }
   }
 
-  @keyframes bounce-bottom-center-reverse {
+  @keyframes bounce-top-center-reverse {
     0% {
-      transform: translate(-50%, 0vh);
+      transform: translateY(0vh);
     }
     50% {
-      transform: translate(-50%, -2vh);
+      transform: translateY(-2vh);
     }
     70% {
-      transform: translate(-50%, 3vh);
+      transform: translateY(3vh);
     }
     90% {
-      transform: translate(-50%, -5vh);
+      transform: translateY(-5vh);
     }
     100% {
-      transform: translate(-50%, 100vh);
+      transform: translateY(100vh);
     }
   }
 
@@ -395,10 +395,10 @@ export const animation = styled('div')`
 
   @keyframes zoom-center-reverse {
     from {
-      transform: scale(1) translateX(-50%);
+      transform: scale(1);
     }
     to {
-      transform: scale(0) translateX(-50%);
+      transform: scale(0);
     }
   }
 
@@ -419,15 +419,15 @@ export const animation = styled('div')`
 
   @keyframes flip-center-reverse {
     0% {
-      transform: perspective(400px) scale(1) translateX(-50%);
+      transform: perspective(400px) scale(1);
       animation-timing-function: ease-in;
     }
     50% {
-      transform: perspective(400px) translateX(-50%);
+      transform: perspective(400px);
       animation-timing-function: ease-out;
     }
     100% {
-      transform: perspective(400px) rotateX(-25deg) scale(1) translateX(-50%);
+      transform: perspective(400px) rotateX(-25deg) scale(1);
       animation-timing-function: ease-in;
     }
   }

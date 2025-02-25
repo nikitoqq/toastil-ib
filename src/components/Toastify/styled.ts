@@ -5,7 +5,6 @@ export const Toast = styled(animation)`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  position: fixed;
   width: 312px;
   height: 85px;
   box-shadow: 0px 1px 5px 0.5px rgb(236, 236, 236);
@@ -19,21 +18,19 @@ export const Row = styled('div')`
   padding: 0px 8px;
 `;
 
-export const Loader = styled(animationLoader)`
+export const Loader = styled('div')`
+  background-color: ${(props) => props.property};
   display: flex;
-  animation: ${(props) => props.property}ms linear 0s alternate load;
-  bottom: 0%;
-  background-color: black;
-  position: absolute;
-  opacity: 0.2;
   width: 100%;
   height: 5px;
   border-bottom-left-radius: 5px;
   border-bottom-right-radius: 5px;
 `;
 
-export const HiddenLoader = styled('div')`
-  display: flex;
+export const HiddenLoader = styled(animationLoader)`
+  animation: ${(props) => props.property}ms linear 0s alternate load;
+  background-color: black;
+  opacity: 0.2;
   width: 100%;
   height: 5px;
   border-bottom-left-radius: 5px;
@@ -52,6 +49,7 @@ export const CancelColumn = styled('div')`
 `;
 
 export const Message = styled('h2')`
+  color: ${(props) => props.property};
   font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
   font-weight: 400;
   font-size: 17px;
@@ -60,6 +58,7 @@ export const Message = styled('h2')`
 `;
 
 export const Tittle = styled('h1')`
+  color: ${(props) => props.property};
   font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
   font-weight: 400;
   font-size: 22px;
@@ -69,6 +68,7 @@ export const Tittle = styled('h1')`
 `;
 
 export const Cancel = styled('button')`
+  background-color: ${(props) => props.property};
   border: 0px;
   width: 25px;
   height: 25px;
